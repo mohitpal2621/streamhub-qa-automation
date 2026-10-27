@@ -1,0 +1,351 @@
+openapi: 3.1.0
+info:
+  title: Streamhub Catalogue API
+  version: 1.0.0
+  description: |
+    Read-only catalogue of videos and channels, served from JSON files.
+
+    Every endpoint rejects query parameters it does not know, so a typo such as
+    `?sortBy=views` fails with 400 instead of being silently ignored. Every 4xx
+    and 5xx response uses the `Error` body below and lists each problem in
+    `error.details`.
+servers:
+  - url: /api/v1
+
+paths:
+  /health:
+    get:
+      summary: Liveness check
+      operationId: getHealth
+      responses:
+        '200':
+          description: The API is up.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                additionalProperties: false
+                properties:
+                  status:
+                    const: ok
+
+  /videos:
+    get:
+      summary: List videos
+      operationId: listVideos
+      description: |
+        Filters are combined with AND. `category` accepts a comma-separated
+        list, matched with OR. `from` and `to` compare the UTC date of
+        `publishedAt` and are both inclusive. A page past the last one returns
+        an empty `data` array.
+      parameters:
+        - name: q
+          in: query
+          description: Case-insensitive search in the title and tags (2-100 characters after trimming).
+          schema: { type: string, minLength: 2, maxLength: 100 }
+        - name: category
+          in: query
+          description: One or more categories, comma-separated.
+          schema: { type: string, example: 'music,sports' }
+        - name: channelId
+          in: query
+          schema: { type: string, pattern: '^ch_[0-9]{3}$' }
+        - name: live
+          in: query
+          description: true for videos that were streamed live, false for uploads.
+          schema: { type: string, enum: ['true', 'false'] }
+        - name: minDuration
+          in: query
+          description: Minimum duration in seconds, inclusive.
+          schema: { type: integer, minimum: 0 }
+        - name: maxDuration
+          in: query
+          description: Maximum duration in seconds, inclusive. Must not be below minDuration.
+          schema: { type: integer, minimum: 0 }
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+        - name: sort
+          in: query
+          description: Sort field, prefixed with `-` for descending order. Ties are broken by id.
+          schema:
+            type: string
+            enum: [publishedAt, -publishedAt, views, -views, durationSeconds, -durationSeconds, title, -title]
+            default: -publishedAt
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: One page of videos.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/VideoList' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+
+  /videos/{videoId}:
+    get:
+      summary: Get one video with its channel
+      operationId: getVideo
+      parameters:
+        - name: videoId
+          in: path
+          required: true
+          schema: { type: string, pattern: '^vid_[0-9]{3}$' }
+      responses:
+        '200':
+          description: The video.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/VideoDetail' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+
+  /channels:
+    get:
+      summary: List channels
+      operationId: listChannels
+      parameters:
+        - name: q
+          in: query
+          description: Case-insensitive search in the name and handle (2-100 characters after trimming).
+          schema: { type: string, minLength: 2, maxLength: 100 }
+        - name: country
+          in: query
+          description: ISO 3166-1 alpha-2 code in upper case.
+          schema: { type: string, pattern: '^[A-Z]{2}$' }
+        - name: verified
+          in: query
+          schema: { type: string, enum: ['true', 'false'] }
+        - name: minSubscribers
+          in: query
+          schema: { type: integer, minimum: 0 }
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [name, -name, subscribers, -subscribers, createdAt, -createdAt]
+            default: name
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: One page of channels.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ChannelList' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+
+  /stats/views:
+    get:
+      summary: Total views grouped by category, channel or month
+      operationId: getViewStats
+      description: Groups are ordered by views, highest first, with ties broken by key.
+      parameters:
+        - name: groupBy
+          in: query
+          required: true
+          schema: { type: string, enum: [category, channel, month] }
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+        - name: top
+          in: query
+          description: Return only the first N groups.
+          schema: { type: integer, minimum: 1, maximum: 20 }
+      responses:
+        '200':
+          description: View totals per group.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ViewStats' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '405': { $ref: '#/components/responses/MethodNotAllowed' }
+
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 10000, default: 1 }
+    limit:
+      name: limit
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 50, default: 10 }
+    from:
+      name: from
+      in: query
+      description: Earliest publish date (YYYY-MM-DD, UTC), inclusive.
+      schema: { type: string, format: date }
+    to:
+      name: to
+      in: query
+      description: Latest publish date (YYYY-MM-DD, UTC), inclusive. Must not be before from.
+      schema: { type: string, format: date }
+
+  responses:
+    BadRequest:
+      description: A query or path parameter is unknown, missing or invalid.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    NotFound:
+      description: No resource with that id.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+    MethodNotAllowed:
+      description: Only GET is supported. The Allow header lists the allowed methods.
+      headers:
+        Allow:
+          schema: { type: string, example: 'GET, HEAD' }
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+
+  schemas:
+    Category:
+      type: string
+      enum: [documentary, education, entertainment, gaming, music, news, sports, technology]
+
+    # Shared by Video and VideoDetail. It has no additionalProperties so that
+    # each of them can close the object with unevaluatedProperties instead.
+    VideoFields:
+      type: object
+      required: [id, title, channelId, category, tags, durationSeconds, views, likes, publishedAt, live]
+      properties:
+        id: { type: string, pattern: '^vid_[0-9]{3}$' }
+        title: { type: string, minLength: 1 }
+        channelId: { type: string, pattern: '^ch_[0-9]{3}$' }
+        category: { $ref: '#/components/schemas/Category' }
+        tags:
+          type: array
+          uniqueItems: true
+          items: { type: string, minLength: 1 }
+        durationSeconds: { type: integer, minimum: 1 }
+        views: { type: integer, minimum: 0 }
+        likes: { type: integer, minimum: 0 }
+        publishedAt: { type: string, format: date-time }
+        live: { type: boolean }
+
+    Video:
+      allOf:
+        - $ref: '#/components/schemas/VideoFields'
+      unevaluatedProperties: false
+
+    VideoDetail:
+      allOf:
+        - $ref: '#/components/schemas/VideoFields'
+      type: object
+      required: [channel]
+      properties:
+        channel:
+          type: object
+          additionalProperties: false
+          required: [id, name, handle, verified]
+          properties:
+            id: { type: string }
+            name: { type: string }
+            handle: { type: string }
+            verified: { type: boolean }
+      unevaluatedProperties: false
+
+    Channel:
+      type: object
+      additionalProperties: false
+      required: [id, name, handle, country, verified, subscribers, createdAt, videoCount]
+      properties:
+        id: { type: string, pattern: '^ch_[0-9]{3}$' }
+        name: { type: string, minLength: 1 }
+        handle: { type: string, pattern: '^@[a-z0-9]+$' }
+        country: { type: string, pattern: '^[A-Z]{2}$' }
+        verified: { type: boolean }
+        subscribers: { type: integer, minimum: 0 }
+        createdAt: { type: string, format: date }
+        videoCount: { type: integer, minimum: 0 }
+
+    Pagination:
+      type: object
+      additionalProperties: false
+      required: [page, limit, totalItems, totalPages]
+      properties:
+        page: { type: integer, minimum: 1 }
+        limit: { type: integer, minimum: 1, maximum: 50 }
+        totalItems: { type: integer, minimum: 0 }
+        totalPages: { type: integer, minimum: 0 }
+
+    VideoList:
+      type: object
+      additionalProperties: false
+      required: [data, pagination]
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Video' }
+        pagination: { $ref: '#/components/schemas/Pagination' }
+
+    ChannelList:
+      type: object
+      additionalProperties: false
+      required: [data, pagination]
+      properties:
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Channel' }
+        pagination: { $ref: '#/components/schemas/Pagination' }
+
+    ViewStats:
+      type: object
+      additionalProperties: false
+      required: [groupBy, from, to, totals, groups]
+      properties:
+        groupBy: { type: string, enum: [category, channel, month] }
+        from: { type: [string, 'null'], format: date }
+        to: { type: [string, 'null'], format: date }
+        totals:
+          type: object
+          additionalProperties: false
+          required: [videos, views]
+          properties:
+            videos: { type: integer, minimum: 0 }
+            views: { type: integer, minimum: 0 }
+        groups:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            required: [key, label, videos, views, averageViews]
+            properties:
+              key: { type: string }
+              label: { type: string }
+              videos: { type: integer, minimum: 1 }
+              views: { type: integer, minimum: 0 }
+              averageViews: { type: integer, minimum: 0 }
+
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          required: [status, code, message, details]
+          properties:
+            status: { type: integer, minimum: 400, maximum: 599 }
+            code:
+              type: string
+              enum: [UNKNOWN_PARAMETER, MISSING_PARAMETER, INVALID_PARAMETER, NOT_FOUND, METHOD_NOT_ALLOWED, INTERNAL_ERROR]
+            message: { type: string, minLength: 1 }
+            details:
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                required: [parameter, code, message]
+                properties:
+                  parameter: { type: string }
+                  code: { type: string, enum: [UNKNOWN_PARAMETER, MISSING_PARAMETER, INVALID_PARAMETER] }
+                  message: { type: string }
+                  value: { type: string }

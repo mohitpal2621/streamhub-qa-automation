@@ -1,0 +1,24 @@
+# Private notes and the brief
+materials/
+CLAUDE.md
+.claude/
+
+# Dependencies
+node_modules/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Output of ad-hoc local runs; the committed results are under reports/
+reports/all/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Playwright traces of failed UI scenarios (several MB each); open locally with npx playwright show-trace
+reports/**/traces/

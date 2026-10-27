@@ -1,0 +1,48 @@
+{
+  "name": "streamhub-qa-automation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Streamhub QA automation assessment (Section B): catalogue API, Playwright + Cucumber API and UI tests, SQL scenarios",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "api": "tsx api/src/server.ts",
+    "api:dev": "tsx watch api/src/server.ts",
+    "test": "npm run test:api && npm run test:sql && npm run test:ui",
+    "pretest:api": "tsx scripts/clean-reports.ts api",
+    "test:api": "cucumber-js --profile api",
+    "pretest:sql": "tsx scripts/clean-reports.ts sql",
+    "test:sql": "cucumber-js --profile sql",
+    "pretest:ui": "tsx scripts/clean-reports.ts ui",
+    "test:ui": "cucumber-js --profile ui",
+    "pretest:healing:off": "tsx scripts/clean-reports.ts self-healing/healing-off",
+    "test:healing:off": "cucumber-js --profile healing_off",
+    "pretest:healing": "tsx scripts/clean-reports.ts self-healing/healing-on",
+    "test:healing": "cucumber-js --profile healing",
+    "pretest:healing:claude": "tsx scripts/clean-reports.ts self-healing/healing-on-claude",
+    "test:healing:claude": "cucumber-js --profile healing_claude",
+    "sql:run": "tsx sql/run-queries.ts",
+    "report:summary": "tsx scripts/summarize-reports.ts",
+    "typecheck": "tsc --noEmit",
+    "browsers": "playwright install chromium"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "@cucumber/cucumber": "^13.3.0",
+    "@electric-sql/pglite": "^0.5.12",
+    "@playwright/test": "^1.64.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.19.2",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "dotenv": "^18.0.9",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "yaml": "^2.9.1"
+  }
+}
