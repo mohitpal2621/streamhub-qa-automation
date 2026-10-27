@@ -1,0 +1,1068 @@
+
+Feature: Channels endpoint
+
+  @api
+  Scenario: Default listing is sorted by name                    # tests\features\api\channels.feature:8
+    ✔ Given the catalogue API is running                         # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels"                                 # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                            # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                  # tests\steps\api\http.steps.ts:53
+    ✔ And the pagination shows page 1 of 1 with 6 items in total # tests\steps\api\catalogue.steps.ts:50
+    ✔ And the items are sorted by "name" in ascending order      # tests\steps\api\catalogue.steps.ts:87
+
+  @api
+  Scenario Outline: Filter channels: by country # tests\features\api\channels.feature:23
+    ✔ Given the catalogue API is running        # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?country=IN"     # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200           # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "ch_003, ch_006"     # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter channels: unverified only # tests\features\api\channels.feature:24
+    ✔ Given the catalogue API is running             # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?verified=false"      # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract      # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "ch_005, ch_004"          # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter channels: at least 1M subscribers # tests\features\api\channels.feature:25
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?minSubscribers=1000000"      # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "ch_003, ch_001"                  # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter channels: search by name # tests\features\api\channels.feature:26
+    ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?q=beats"            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract     # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "ch_002"                 # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter channels: search by handle # tests\features\api\channels.feature:27
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?q=@wild"              # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract       # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "ch_006"                   # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter channels: country with no channels # tests\features\api\channels.feature:28
+    ✔ Given the catalogue API is running                      # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?country=FR"                   # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                         # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract               # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are ""                                 # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter channels: combined, sorted                       # tests\features\api\channels.feature:29
+    ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?country=GB&verified=true&sort=-subscribers" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                             # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "ch_001, ch_002"                                 # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Sort channels by name                                   # tests\features\api\channels.feature:39
+    ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?sort=name"                                  # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the items are sorted by "name" in ascending order                 # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the item ids are "ch_003, ch_005, ch_002, ch_001, ch_004, ch_006" # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Sort channels by -name                                  # tests\features\api\channels.feature:40
+    ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?sort=-name"                                 # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the items are sorted by "name" in descending order                # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the item ids are "ch_006, ch_004, ch_001, ch_002, ch_005, ch_003" # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Sort channels by subscribers                            # tests\features\api\channels.feature:41
+    ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?sort=subscribers"                           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the items are sorted by "subscribers" in ascending order          # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the item ids are "ch_005, ch_004, ch_006, ch_002, ch_001, ch_003" # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Sort channels by -subscribers                           # tests\features\api\channels.feature:42
+    ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?sort=-subscribers"                          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the items are sorted by "subscribers" in descending order         # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the item ids are "ch_003, ch_001, ch_002, ch_006, ch_004, ch_005" # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Sort channels by createdAt                              # tests\features\api\channels.feature:43
+    ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?sort=createdAt"                             # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the items are sorted by "createdAt" in ascending order            # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the item ids are "ch_003, ch_001, ch_006, ch_002, ch_004, ch_005" # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Sort channels by -createdAt                             # tests\features\api\channels.feature:44
+    ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?sort=-createdAt"                            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the items are sorted by "createdAt" in descending order           # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the item ids are "ch_005, ch_004, ch_002, ch_006, ch_001, ch_003" # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario: The second page holds the remaining channels         # tests\features\api\channels.feature:46
+    ✔ Given the catalogue API is running                         # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?limit=4&page=2"                  # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                            # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                  # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 2 items                              # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 2 of 2 with 6 items in total # tests\steps\api\catalogue.steps.ts:50
+
+  @api
+  Scenario: Each channel's video count agrees with the videos endpoint                                # tests\features\api\channels.feature:53
+    ✔ Given the catalogue API is running                                                              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels"                                                                      # tests\steps\api\http.steps.ts:34
+    ✔ Then each channel's "videoCount" equals the number of videos the videos endpoint returns for it # tests\steps\api\catalogue.steps.ts:103
+
+  @api
+  Scenario Outline: Reject a lower-case country code  # tests\features\api\channels.feature:66
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?country=gb"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract       # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"       # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "country" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a three-letter country code # tests\features\api\channels.feature:67
+    ✔ Given the catalogue API is running               # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?country=GBR"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                  # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract        # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"        # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "country" parameter  # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a verified flag of "1"      # tests\features\api\channels.feature:68
+    ✔ Given the catalogue API is running               # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?verified=1"            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                  # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract        # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"        # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "verified" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject negative subscribers              # tests\features\api\channels.feature:69
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?minSubscribers=-1"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"              # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "minSubscribers" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a sort field videos have # tests\features\api\channels.feature:70
+    ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?sort=views"         # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract     # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"     # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "sort" parameter  # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a limit of 500           # tests\features\api\channels.feature:71
+    ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?limit=500"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract     # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"     # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "limit" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a filter that videos have   # tests\features\api\channels.feature:72
+    ✔ Given the catalogue API is running               # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?category=music"        # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                  # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract        # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "UNKNOWN_PARAMETER"        # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "category" parameter # tests\steps\api\http.steps.ts:79
+
+Feature: Behaviour shared by every endpoint
+
+  @api
+  Scenario: Health check                        # tests\features\api\general.feature:7
+    ✔ Given the catalogue API is running        # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/health"                  # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200           # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract # tests\steps\api\http.steps.ts:53
+    ✔ And the response field "status" is "ok"   # tests\steps\api\http.steps.ts:69
+
+  @api
+  Scenario Outline: Responses are JSON: /videos                           # tests\features\api\general.feature:19
+    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos"                                            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+
+  @api
+  Scenario Outline: Responses are JSON: /videos/vid_404                   # tests\features\api\general.feature:20
+    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos/vid_404"                                    # tests\steps\api\http.steps.ts:34
+    ✔ Then the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+
+  @api
+  Scenario Outline: Responses are JSON: /channels?limit=0                 # tests\features\api\general.feature:21
+    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?limit=0"                                  # tests\steps\api\http.steps.ts:34
+    ✔ Then the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+
+  @api
+  Scenario Outline: Responses are JSON: /stats/views?groupBy=month        # tests\features\api\general.feature:22
+    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=month"                         # tests\steps\api\http.steps.ts:34
+    ✔ Then the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+
+  @api
+  Scenario Outline: POST is not allowed on /videos   # tests\features\api\general.feature:33
+    ✔ Given the catalogue API is running             # tests\steps\api\http.steps.ts:29
+    ✔ When I send a POST request to "/videos"        # tests\steps\api\http.steps.ts:38
+    ✔ Then the response status is 405                # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract      # tests\steps\api\http.steps.ts:53
+    ✔ And the response header "allow" contains "GET" # tests\steps\api\http.steps.ts:61
+    ✔ And the error code is "METHOD_NOT_ALLOWED"     # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario Outline: PUT is not allowed on /videos/vid_001 # tests\features\api\general.feature:34
+    ✔ Given the catalogue API is running                  # tests\steps\api\http.steps.ts:29
+    ✔ When I send a PUT request to "/videos/vid_001"      # tests\steps\api\http.steps.ts:38
+    ✔ Then the response status is 405                     # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract           # tests\steps\api\http.steps.ts:53
+    ✔ And the response header "allow" contains "GET"      # tests\steps\api\http.steps.ts:61
+    ✔ And the error code is "METHOD_NOT_ALLOWED"          # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario Outline: DELETE is not allowed on /videos/vid_001 # tests\features\api\general.feature:35
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I send a DELETE request to "/videos/vid_001"      # tests\steps\api\http.steps.ts:38
+    ✔ Then the response status is 405                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And the response header "allow" contains "GET"         # tests\steps\api\http.steps.ts:61
+    ✔ And the error code is "METHOD_NOT_ALLOWED"             # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario Outline: PATCH is not allowed on /channels # tests\features\api\general.feature:36
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I send a PATCH request to "/channels"      # tests\steps\api\http.steps.ts:38
+    ✔ Then the response status is 405                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract       # tests\steps\api\http.steps.ts:53
+    ✔ And the response header "allow" contains "GET"  # tests\steps\api\http.steps.ts:61
+    ✔ And the error code is "METHOD_NOT_ALLOWED"      # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario Outline: POST is not allowed on /stats/views # tests\features\api\general.feature:37
+    ✔ Given the catalogue API is running                # tests\steps\api\http.steps.ts:29
+    ✔ When I send a POST request to "/stats/views"      # tests\steps\api\http.steps.ts:38
+    ✔ Then the response status is 405                   # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract         # tests\steps\api\http.steps.ts:53
+    ✔ And the response header "allow" contains "GET"    # tests\steps\api\http.steps.ts:61
+    ✔ And the error code is "METHOD_NOT_ALLOWED"        # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario: HEAD is answered like GET, without a body # tests\features\api\general.feature:39
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I send a HEAD request to "/videos"         # tests\steps\api\http.steps.ts:38
+    ✔ Then the response status is 200                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response body is empty                  # tests\steps\api\http.steps.ts:65
+
+  @api
+  Scenario: An unknown route returns the standard error body # tests\features\api\general.feature:44
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/playlists"                            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 404                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response body matches the "Error" schema       # tests\steps\api\http.steps.ts:57
+    ✔ And the error code is "NOT_FOUND"                      # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario: A malformed percent-encoding is a client error, not a crash # tests\features\api\general.feature:50
+    ✔ Given the catalogue API is running                                # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos/%E0%A4%A"                                 # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                                   # tests\steps\api\http.steps.ts:49
+    ✔ And the response body matches the "Error" schema                  # tests\steps\api\http.steps.ts:57
+
+Feature: View statistics endpoint
+
+  @api
+  Scenario: groupBy is required                       # tests\features\api\stats.feature:10
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views"                   # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract       # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "MISSING_PARAMETER"       # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "groupBy" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Views grouped by category                                # tests\features\api\stats.feature:28
+    ✔ Given the catalogue API is running                                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=category"                         # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                              # tests\steps\api\http.steps.ts:53
+    ✔ And there are 8 groups covering 30 videos and 19,619,400 views         # tests\steps\api\catalogue.steps.ts:113
+    ✔ And the groups are ordered by views, highest first                     # tests\steps\api\catalogue.steps.ts:121
+    ✔ And the group totals add up to the overall totals                      # tests\steps\api\catalogue.steps.ts:126
+    ✔ And every group's totals match what the videos endpoint returns for it # tests\steps\api\catalogue.steps.ts:148
+
+  @api
+  Scenario Outline: Views grouped by channel                                 # tests\features\api\stats.feature:29
+    ✔ Given the catalogue API is running                                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=channel"                          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                              # tests\steps\api\http.steps.ts:53
+    ✔ And there are 6 groups covering 30 videos and 19,619,400 views         # tests\steps\api\catalogue.steps.ts:113
+    ✔ And the groups are ordered by views, highest first                     # tests\steps\api\catalogue.steps.ts:121
+    ✔ And the group totals add up to the overall totals                      # tests\steps\api\catalogue.steps.ts:126
+    ✔ And every group's totals match what the videos endpoint returns for it # tests\steps\api\catalogue.steps.ts:148
+
+  @api
+  Scenario Outline: Views grouped by month                                   # tests\features\api\stats.feature:30
+    ✔ Given the catalogue API is running                                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=month"                            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                              # tests\steps\api\http.steps.ts:53
+    ✔ And there are 13 groups covering 30 videos and 19,619,400 views        # tests\steps\api\catalogue.steps.ts:113
+    ✔ And the groups are ordered by views, highest first                     # tests\steps\api\catalogue.steps.ts:121
+    ✔ And the group totals add up to the overall totals                      # tests\steps\api\catalogue.steps.ts:126
+    ✔ And every group's totals match what the videos endpoint returns for it # tests\steps\api\catalogue.steps.ts:148
+
+  @api
+  Scenario: Top three categories                           # tests\features\api\stats.feature:32
+    ✔ Given the catalogue API is running                   # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=category&top=3" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                      # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract            # tests\steps\api\http.steps.ts:53
+    ✔ And the groups are:                                  # tests\steps\api\catalogue.steps.ts:132
+        | key         | label       | videos | views     | averageViews |
+        | sports      | sports      | 5      | 4,494,200 | 898,840      |
+        | documentary | documentary | 4      | 4,370,500 | 1,092,625    |
+        | news        | news        | 4      | 3,217,000 | 804,250      |
+
+  @api
+  Scenario: Views per channel for March 2026                                      # tests\features\api\stats.feature:42
+    ✔ Given the catalogue API is running                                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=channel&from=2026-03-01&to=2026-03-31" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                                   # tests\steps\api\http.steps.ts:53
+    ✔ And there are 5 groups covering 5 videos and 1,631,700 views                # tests\steps\api\catalogue.steps.ts:113
+    ✔ And the groups are:                                                         # tests\steps\api\catalogue.steps.ts:132
+        | key    | label           | videos | views   | averageViews |
+        | ch_003 | Byte Sized Tech | 1      | 764,000 | 764,000      |
+        | ch_001 | Pitchside Live  | 1      | 486,000 | 486,000      |
+        | ch_004 | The Daily Brief | 1      | 176,800 | 176,800      |
+        | ch_002 | Northern Beats  | 1      | 128,400 | 128,400      |
+        | ch_006 | Wild Frontiers  | 1      | 76,500  | 76,500       |
+    ✔ And every group's totals match what the videos endpoint returns for it      # tests\steps\api\catalogue.steps.ts:148
+
+  @api
+  Scenario: A date range with no videos gives empty groups        # tests\features\api\stats.feature:56
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=month&from=2027-01-01" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And there are 0 groups covering 0 videos and 0 views        # tests\steps\api\catalogue.steps.ts:113
+
+  @api
+  Scenario Outline: Reject an unsupported groupBy     # tests\features\api\stats.feature:71
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=tag"       # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract       # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"       # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "groupBy" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject an empty groupBy           # tests\features\api\stats.feature:72
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy="          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract       # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"       # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "groupBy" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject top of zero                     # tests\features\api\stats.feature:73
+    ✔ Given the catalogue API is running                   # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=category&top=0" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                      # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract            # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"            # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "top" parameter          # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject top above 20                     # tests\features\api\stats.feature:74
+    ✔ Given the catalogue API is running                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=category&top=21" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract             # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"             # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "top" parameter           # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject from later than to                                   # tests\features\api\stats.feature:75
+    ✔ Given the catalogue API is running                                        # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=month&from=2026-06-01&to=2026-01-01" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                                           # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                                 # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"                                 # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "to" parameter                                # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a parameter it lacks              # tests\features\api\stats.feature:76
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=month&sort=views" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "UNKNOWN_PARAMETER"              # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "sort" parameter           # tests\steps\api\http.steps.ts:79
+
+Feature: Videos endpoint rejects bad query parameters
+
+  @api
+  Scenario Outline: Reject a limit of zero          # tests\features\api\videos-validation.feature:18
+    ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?limit=0"              # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract     # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"     # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "limit" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a limit above 50         # tests\features\api\videos-validation.feature:19
+    ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?limit=51"             # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract     # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"     # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "limit" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a page of zero          # tests\features\api\videos-validation.feature:20
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?page=0"              # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "page" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a negative page         # tests\features\api\videos-validation.feature:21
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?page=-1"             # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "page" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a page above 10000      # tests\features\api\videos-validation.feature:22
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?page=10001"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "page" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a negative duration            # tests\features\api\videos-validation.feature:23
+    ✔ Given the catalogue API is running                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?minDuration=-5"             # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                     # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract           # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"           # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "minDuration" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a number too big to use        # tests\features\api\videos-validation.feature:24
+    ✔ Given the catalogue API is running                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?limit=99999999999999999999" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                     # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract           # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"           # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "limit" parameter       # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a word for a limit       # tests\features\api\videos-validation.feature:28
+    ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?limit=ten"            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract     # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"     # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "limit" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a decimal page          # tests\features\api\videos-validation.feature:29
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?page=1.5"            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "page" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject an empty limit           # tests\features\api\videos-validation.feature:30
+    ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?limit="               # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract     # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"     # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "limit" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a live flag of "yes"    # tests\features\api\videos-validation.feature:31
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?live=yes"            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "live" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a live flag of "1"      # tests\features\api\videos-validation.feature:32
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?live=1"              # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "live" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject an impossible date      # tests\features\api\videos-validation.feature:33
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?from=2026-02-30"     # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "from" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a date in DD-MM-YYYY order # tests\features\api\videos-validation.feature:34
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?to=01-03-2026"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract       # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"       # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "to" parameter      # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a malformed channel id       # tests\features\api\videos-validation.feature:35
+    ✔ Given the catalogue API is running                # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?channelId=CH-1"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                   # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract         # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"         # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "channelId" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject an unsupported sort field # tests\features\api\videos-validation.feature:39
+    ✔ Given the catalogue API is running             # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=rating"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract      # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"      # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "sort" parameter   # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject an unknown category         # tests\features\api\videos-validation.feature:40
+    ✔ Given the catalogue API is running               # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?category=cooking"        # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                  # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract        # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"        # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "category" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject one unknown category in a list # tests\features\api\videos-validation.feature:41
+    ✔ Given the catalogue API is running                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?category=music,cooking"     # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                     # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract           # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"           # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "category" parameter    # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a category in the wrong case # tests\features\api\videos-validation.feature:42
+    ✔ Given the catalogue API is running                # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?category=Music"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                   # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract         # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"         # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "category" parameter  # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a one-letter search  # tests\features\api\videos-validation.feature:43
+    ✔ Given the catalogue API is running        # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?q=a"              # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400           # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER" # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "q" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a search of only spaces # tests\features\api\videos-validation.feature:44
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?q=%20%20%20"         # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "q" parameter    # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject minDuration above maxDuration       # tests\features\api\videos-validation.feature:48
+    ✔ Given the catalogue API is running                       # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?minDuration=600&maxDuration=300" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                          # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"                # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "maxDuration" parameter      # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject from later than to                # tests\features\api\videos-validation.feature:49
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?from=2026-05-01&to=2026-04-01" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"              # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "to" parameter             # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a misspelt parameter      # tests\features\api\videos-validation.feature:53
+    ✔ Given the catalogue API is running             # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sortBy=views"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract      # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "UNKNOWN_PARAMETER"      # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "sortBy" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a parameter given twice  # tests\features\api\videos-validation.feature:54
+    ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?limit=5&limit=10"     # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract     # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"     # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "limit" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario: A search term longer than 100 characters is rejected  # tests\features\api\videos-validation.feature:56
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos" with "q" set to 101 "a" characters # tests\steps\api\http.steps.ts:42
+    ✔ Then the response status is 400                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And the error points at the "q" parameter                   # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario: A search term of exactly 100 characters is accepted   # tests\features\api\videos-validation.feature:62
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos" with "q" set to 100 "a" characters # tests\steps\api\http.steps.ts:42
+    ✔ Then the response status is 200                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 0 items                               # tests\steps\api\catalogue.steps.ts:42
+
+  @api
+  Scenario: Every problem in a request is reported in one response                # tests\features\api\videos-validation.feature:68
+    ✔ Given the catalogue API is running                                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?limit=0&page=zero&colour=red"                       # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                                   # tests\steps\api\http.steps.ts:53
+    ✔ And the error message is "3 problems with the request: colour, page, limit" # tests\steps\api\http.steps.ts:84
+    ✔ And the error details are:                                                  # tests\steps\api\http.steps.ts:88
+        | parameter | code              | value |
+        | colour    | UNKNOWN_PARAMETER |       |
+        | page      | INVALID_PARAMETER | zero  |
+        | limit     | INVALID_PARAMETER | 0     |
+
+  @api
+  Scenario: The error message says what a valid value looks like           # tests\features\api\videos-validation.feature:79
+    ✔ Given the catalogue API is running                                   # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?limit=500"                                   # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                                      # tests\steps\api\http.steps.ts:49
+    ✔ And the error message is "limit must be an integer between 1 and 50" # tests\steps\api\http.steps.ts:84
+
+Feature: Videos endpoint
+
+  @api
+  Scenario: Default listing returns the newest videos first, ten per page # tests\features\api\videos.feature:10
+    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos"                                            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                     # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                           # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 10 items                                      # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 1 of 3 with 30 items in total         # tests\steps\api\catalogue.steps.ts:50
+    ✔ And the items are sorted by "publishedAt" in descending order       # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_020"                                     # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Filter by category: music             # tests\features\api\videos.feature:28
+    ✔ Given the catalogue API is running                  # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?category=music&limit=50"    # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                     # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract           # tests\steps\api\http.steps.ts:53
+    ✔ And there are 5 matching items                      # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "category" set to one of "music" # tests\steps\api\catalogue.steps.ts:65
+
+  @api
+  Scenario Outline: Filter by category: technology             # tests\features\api\videos.feature:29
+    ✔ Given the catalogue API is running                       # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?category=technology&limit=50"    # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                          # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                # tests\steps\api\http.steps.ts:53
+    ✔ And there are 3 matching items                           # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "category" set to one of "technology" # tests\steps\api\catalogue.steps.ts:65
+
+  @api
+  Scenario Outline: Filter by category: entertainment             # tests\features\api\videos.feature:30
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?category=entertainment&limit=50"    # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And there are 1 matching items                              # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "category" set to one of "entertainment" # tests\steps\api\catalogue.steps.ts:65
+
+  @api
+  Scenario Outline: Filter by category: music,sports             # tests\features\api\videos.feature:31
+    ✔ Given the catalogue API is running                         # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?category=music,sports&limit=50"    # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                            # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                  # tests\steps\api\http.steps.ts:53
+    ✔ And there are 10 matching items                            # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "category" set to one of "music,sports" # tests\steps\api\catalogue.steps.ts:65
+
+  @api
+  Scenario Outline: Filter by live flag: true        # tests\features\api\videos.feature:42
+    ✔ Given the catalogue API is running             # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?live=true&limit=50"    # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract      # tests\steps\api\http.steps.ts:53
+    ✔ And there are 6 matching items                 # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "live" set to one of "true" # tests\steps\api\catalogue.steps.ts:65
+
+  @api
+  Scenario Outline: Filter by live flag: false        # tests\features\api\videos.feature:43
+    ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?live=false&limit=50"    # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract       # tests\steps\api\http.steps.ts:53
+    ✔ And there are 24 matching items                 # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "live" set to one of "false" # tests\steps\api\catalogue.steps.ts:65
+
+  @api
+  Scenario: Filter by channel                               # tests\features\api\videos.feature:45
+    ✔ Given the catalogue API is running                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?channelId=ch_003&limit=50"    # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract             # tests\steps\api\http.steps.ts:53
+    ✔ And there are 6 matching items                        # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "channelId" set to one of "ch_003" # tests\steps\api\catalogue.steps.ts:65
+
+  @api
+  Scenario Outline: Filter by duration: minDuration=3600          # tests\features\api\videos.feature:61
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?minDuration=3600&limit=50"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And there are 6 matching items                              # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "durationSeconds" between 3600 and 99999 # tests\steps\api\catalogue.steps.ts:72
+
+  @api
+  Scenario Outline: Filter by duration: maxDuration=600      # tests\features\api\videos.feature:62
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?maxDuration=600&limit=50"      # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And there are 4 matching items                         # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "durationSeconds" between 0 and 600 # tests\steps\api\catalogue.steps.ts:72
+
+  @api
+  Scenario Outline: Filter by duration: minDuration=900&maxDuration=1500 # tests\features\api\videos.feature:63
+    ✔ Given the catalogue API is running                                 # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?minDuration=900&maxDuration=1500&limit=50" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                    # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                          # tests\steps\api\http.steps.ts:53
+    ✔ And there are 10 matching items                                    # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "durationSeconds" between 900 and 1500          # tests\steps\api\catalogue.steps.ts:72
+
+  @api
+  Scenario Outline: Filter by duration: minDuration=905&maxDuration=905 # tests\features\api\videos.feature:64
+    ✔ Given the catalogue API is running                                # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?minDuration=905&maxDuration=905&limit=50" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                   # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                         # tests\steps\api\http.steps.ts:53
+    ✔ And there are 2 matching items                                    # tests\steps\api\catalogue.steps.ts:46
+    ✔ And every item has "durationSeconds" between 905 and 905          # tests\steps\api\catalogue.steps.ts:72
+
+  @api
+  Scenario Outline: Filter by publish date: from=2026-03-01&to=2026-03-31              # tests\features\api\videos.feature:74
+    ✔ Given the catalogue API is running                                               # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?from=2026-03-01&to=2026-03-31&sort=publishedAt&limit=50" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                                  # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                                        # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "vid_003, vid_012, vid_019, vid_028, vid_007"               # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter by publish date: from=2026-03-05&to=2026-03-05              # tests\features\api\videos.feature:75
+    ✔ Given the catalogue API is running                                               # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?from=2026-03-05&to=2026-03-05&sort=publishedAt&limit=50" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                                  # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                                        # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "vid_003"                                                   # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter by publish date: from=2026-09-01              # tests\features\api\videos.feature:76
+    ✔ Given the catalogue API is running                                 # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?from=2026-09-01&sort=publishedAt&limit=50" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                    # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                          # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "vid_017, vid_025, vid_020"                   # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Filter by publish date: to=2025-12-31                         # tests\features\api\videos.feature:77
+    ✔ Given the catalogue API is running                                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?to=2025-12-31&sort=publishedAt&limit=50"            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                                   # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "vid_016, vid_018, vid_006, vid_009, vid_026, vid_023" # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario Outline: Search titles and tags for "highlights"     # tests\features\api\videos.feature:88
+    ✔ Given the catalogue API is running                        # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?q=highlights&sort=title"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                           # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                 # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "vid_024, vid_001"                   # tests\steps\api\catalogue.steps.ts:61
+    ✔ And every item mentions "highlights" in its title or tags # tests\steps\api\catalogue.steps.ts:79
+
+  @api
+  Scenario Outline: Search titles and tags for "TESTING"     # tests\features\api\videos.feature:89
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?q=TESTING&sort=title"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "vid_015, vid_011"                # tests\steps\api\catalogue.steps.ts:61
+    ✔ And every item mentions "testing" in its title or tags # tests\steps\api\catalogue.steps.ts:79
+
+  @api
+  Scenario Outline: Search titles and tags for "%20%20sql%20%20" # tests\features\api\videos.feature:90
+    ✔ Given the catalogue API is running                         # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?q=%20%20sql%20%20&sort=title"      # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                            # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                  # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "vid_013"                             # tests\steps\api\catalogue.steps.ts:61
+    ✔ And every item mentions "sql" in its title or tags         # tests\steps\api\catalogue.steps.ts:79
+
+  @api
+  Scenario Outline: Search titles and tags for "top-10"     # tests\features\api\videos.feature:91
+    ✔ Given the catalogue API is running                    # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?q=top-10&sort=title"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract             # tests\steps\api\http.steps.ts:53
+    ✔ And the item ids are "vid_023, vid_004"               # tests\steps\api\catalogue.steps.ts:61
+    ✔ And every item mentions "top-10" in its title or tags # tests\steps\api\catalogue.steps.ts:79
+
+  @api
+  Scenario: A search with no matches returns an empty page, not an error # tests\features\api\videos.feature:93
+    ✔ Given the catalogue API is running                                 # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?q=cooking"                                 # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                    # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                          # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 0 items                                      # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 1 of 0 with 0 items in total         # tests\steps\api\catalogue.steps.ts:50
+
+  @api
+  Scenario Outline: Sort by publishedAt                            # tests\features\api\videos.feature:109
+    ✔ Given the catalogue API is running                           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=publishedAt&limit=50"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                    # tests\steps\api\http.steps.ts:53
+    ✔ And the items are sorted by "publishedAt" in ascending order # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_016"                              # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Sort by -publishedAt                            # tests\features\api\videos.feature:110
+    ✔ Given the catalogue API is running                            # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=-publishedAt&limit=50"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                               # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                     # tests\steps\api\http.steps.ts:53
+    ✔ And the items are sorted by "publishedAt" in descending order # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_020"                               # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Sort by views                            # tests\features\api\videos.feature:111
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=views&limit=50"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And the items are sorted by "views" in ascending order # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_015"                        # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Sort by -views                            # tests\features\api\videos.feature:112
+    ✔ Given the catalogue API is running                      # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=-views&limit=50"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                         # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract               # tests\steps\api\http.steps.ts:53
+    ✔ And the items are sorted by "views" in descending order # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_018"                         # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Sort by durationSeconds                            # tests\features\api\videos.feature:113
+    ✔ Given the catalogue API is running                               # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=durationSeconds&limit=50"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                  # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                        # tests\steps\api\http.steps.ts:53
+    ✔ And the items are sorted by "durationSeconds" in ascending order # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_006"                                  # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Sort by -durationSeconds                            # tests\features\api\videos.feature:114
+    ✔ Given the catalogue API is running                                # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=-durationSeconds&limit=50"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                   # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                         # tests\steps\api\http.steps.ts:53
+    ✔ And the items are sorted by "durationSeconds" in descending order # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_018"                                   # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Sort by title                            # tests\features\api\videos.feature:115
+    ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=title&limit=50"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                        # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract              # tests\steps\api\http.steps.ts:53
+    ✔ And the items are sorted by "title" in ascending order # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_006"                        # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Sort by -title                            # tests\features\api\videos.feature:116
+    ✔ Given the catalogue API is running                      # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=-title&limit=50"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                         # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract               # tests\steps\api\http.steps.ts:53
+    ✔ And the items are sorted by "title" in descending order # tests\steps\api\catalogue.steps.ts:87
+    ✔ And the first item is "vid_020"                         # tests\steps\api\catalogue.steps.ts:57
+
+  @api
+  Scenario Outline: Page 1 with 1 items per page                   # tests\features\api\videos.feature:127
+    ✔ Given the catalogue API is running                           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=views&page=1&limit=1"           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                    # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 1 items                                # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 1 of 30 with 30 items in total # tests\steps\api\catalogue.steps.ts:50
+
+  @api
+  Scenario Outline: Page 2 with 7 items per page                  # tests\features\api\videos.feature:128
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=views&page=2&limit=7"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 7 items                               # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 2 of 5 with 30 items in total # tests\steps\api\catalogue.steps.ts:50
+
+  @api
+  Scenario Outline: Page 5 with 7 items per page                  # tests\features\api\videos.feature:129
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=views&page=5&limit=7"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 2 items                               # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 5 of 5 with 30 items in total # tests\steps\api\catalogue.steps.ts:50
+
+  @api
+  Scenario Outline: Page 1 with 50 items per page                 # tests\features\api\videos.feature:130
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=views&page=1&limit=50"         # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 30 items                              # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 1 of 1 with 30 items in total # tests\steps\api\catalogue.steps.ts:50
+
+  @api
+  Scenario Outline: Page 6 with 7 items per page                  # tests\features\api\videos.feature:131
+    ✔ Given the catalogue API is running                          # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=views&page=6&limit=7"          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                             # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                   # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 0 items                               # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 6 of 5 with 30 items in total # tests\steps\api\catalogue.steps.ts:50
+
+  @api
+  Scenario Outline: Page 10000 with 50 items per page                 # tests\features\api\videos.feature:132
+    ✔ Given the catalogue API is running                              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?sort=views&page=10000&limit=50"         # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                       # tests\steps\api\http.steps.ts:53
+    ✔ And the page contains 0 items                                   # tests\steps\api\catalogue.steps.ts:42
+    ✔ And the pagination shows page 10000 of 1 with 30 items in total # tests\steps\api\catalogue.steps.ts:50
+
+  @api
+  Scenario: Paging through a sorted list returns every video exactly once # tests\features\api\videos.feature:134
+    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
+    ✔ When I collect every page of "/videos?sort=title&limit=7"           # tests\steps\api\catalogue.steps.ts:92
+    ✔ Then I have 30 different videos in title order                      # tests\steps\api\catalogue.steps.ts:96
+
+  @api
+  Scenario: Filters, sorting and paging combine                                                      # tests\features\api\videos.feature:138
+    ✔ Given the catalogue API is running                                                             # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos?category=sports,gaming&live=false&minDuration=900&sort=-views&limit=3" # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                                                # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                                                      # tests\steps\api\http.steps.ts:53
+    ✔ And the pagination shows page 1 of 2 with 6 items in total                                     # tests\steps\api\catalogue.steps.ts:50
+    ✔ And the item ids are "vid_024, vid_003, vid_005"                                               # tests\steps\api\catalogue.steps.ts:61
+
+  @api
+  Scenario: Get one video with its channel                              # tests\features\api\videos.feature:145
+    ✔ Given the catalogue API is running                                # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos/vid_011"                                  # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                   # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                         # tests\steps\api\http.steps.ts:53
+    ✔ And the response field "title" is "Playwright vs Cypress in 2026" # tests\steps\api\http.steps.ts:69
+    ✔ And the response field "channel.name" is "Byte Sized Tech"        # tests\steps\api\http.steps.ts:69
+    ✔ And the response field "channel.verified" is "true"               # tests\steps\api\http.steps.ts:69
+
+  @api
+  Scenario Outline: Looking up a video fails for an id that does not exist # tests\features\api\videos.feature:161
+    ✔ Given the catalogue API is running                                   # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos/vid_999"                                     # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 404                                      # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                            # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "NOT_FOUND"                                    # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario Outline: Looking up a video fails for an id in the wrong format # tests\features\api\videos.feature:162
+    ✔ Given the catalogue API is running                                   # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos/12"                                          # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                                      # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                            # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"                            # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario Outline: Looking up a video fails for an id with SQL in it # tests\features\api\videos.feature:163
+    ✔ Given the catalogue API is running                              # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos/vid_001'%20OR%20'1'='1"                 # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                                 # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                       # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"                       # tests\steps\api\http.steps.ts:73
+
+  @api
+  Scenario Outline: Looking up a video fails for a query parameter # tests\features\api\videos.feature:164
+    ✔ Given the catalogue API is running                           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos/vid_001?expand=channel"              # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "UNKNOWN_PARAMETER"                    # tests\steps\api\http.steps.ts:73
+
+1 hook (1 passed)
+120 scenarios (120 passed)
+1039 steps (1039 passed)
+0m 1.502s (0m 1.288s executing your code)

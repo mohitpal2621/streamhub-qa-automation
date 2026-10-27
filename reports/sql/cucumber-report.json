@@ -1,0 +1,1376 @@
+[
+  {
+    "description": "  Find players who scored 30+ runs in at least 3 consecutive matches in the\n  2024 season, with the date each streak started. The query and the sample\n  data are in sql/ipl_streaks/. Each player in seed.sql is one case.",
+    "elements": [
+      {
+        "description": "",
+        "id": "sql-scenario-2---ipl-batting-streaks;the-query-returns-each-streak-once,-with-its-start-date",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "The query returns each streak once, with its start date",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 284200
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1928780100
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 14481399
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"ipl_streaks\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 6928399
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "I run the \"ipl_streaks\" query",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:23"
+            },
+            "embeddings": [
+              {
+                "data": "UG9zdGdyZVNRTCAxOC42IChQR2xpdGUgMC41LjEyKQoKcGxheWVyX25hbWUgfCBzdHJlYWtfc3RhcnRfZGF0ZQpBYXJhdiBNZW5vbiB8IDIwMjQtMDMtMjIKTmVlbCBDaGF0dGVyamVlIHwgMjAyNC0wMy0yMgpJc2hhYW4gQmhhdHQgfCAyMDI0LTAzLTI0CkRldiBNYWxob3RyYSB8IDIwMjQtMDMtMjYKS2lhbiBUaG9tYXMgfCAyMDI0LTA0LTAyCklzaGFhbiBCaGF0dCB8IDIwMjQtMDQtMTA=",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 9180299
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "the result has the columns \"player_name, streak_start_date\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:48"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1186100
+            },
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "player_name",
+                      "streak_start_date"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Aarav Menon",
+                      "2024-03-22"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Neel Chatterjee",
+                      "2024-03-22"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Ishaan Bhatt",
+                      "2024-03-24"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Dev Malhotra",
+                      "2024-03-26"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Kian Thomas",
+                      "2024-04-02"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Ishaan Bhatt",
+                      "2024-04-10"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "And ",
+            "line": 13,
+            "name": "the result is:",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:52"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1704600
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-2---ipl-batting-streaks;each-streak-is-a-run-of-consecutive-30+-scores",
+        "keyword": "Scenario",
+        "line": 22,
+        "name": "Each streak is a run of consecutive 30+ scores",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 51999
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1252617099
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 10797200
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"ipl_streaks\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 4529700
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "I run the \"ipl_streaks\" details query",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:28"
+            },
+            "embeddings": [
+              {
+                "data": "cGxheWVyX25hbWUgfCB0ZWFtIHwgc3RyZWFrX3N0YXJ0X2RhdGUgfCBzdHJlYWtfZW5kX2RhdGUgfCBtYXRjaGVzX2luX3N0cmVhayB8IHJ1bnMKQWFyYXYgTWVub24gfCBDU0sgfCAyMDI0LTAzLTIyIHwgMjAyNC0wMy0zMSB8IDMgfCAzMCwgNDUsIDMxCk5lZWwgQ2hhdHRlcmplZSB8IFJDQiB8IDIwMjQtMDMtMjIgfCAyMDI0LTA0LTEwIHwgMyB8IDMxLCA0MiwgMzgKSXNoYWFuIEJoYXR0IHwgTUkgfCAyMDI0LTAzLTI0IHwgMjAyNC0wMy0zMSB8IDMgfCAzNSwgNDAsIDUwCkRldiBNYWxob3RyYSB8IE1JIHwgMjAyNC0wMy0yNiB8IDIwMjQtMDQtMTggfCA1IHwgMzMsIDY3LCAzMCwgNTIsIDQxCktpYW4gVGhvbWFzIHwgS0tSIHwgMjAyNC0wNC0wMiB8IDIwMjQtMDQtMTMgfCAzIHwgNDQsIDM2LCAzMQpJc2hhYW4gQmhhdHQgfCBNSSB8IDIwMjQtMDQtMTAgfCAyMDI0LTA0LTIwIHwgMyB8IDMzLCA2MCwgNDQ=",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 2084600
+            },
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "player_name",
+                      "team",
+                      "streak_start_date",
+                      "streak_end_date",
+                      "matches_in_streak",
+                      "runs"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Aarav Menon",
+                      "CSK",
+                      "2024-03-22",
+                      "2024-03-31",
+                      "3",
+                      "30, 45, 31"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Neel Chatterjee",
+                      "RCB",
+                      "2024-03-22",
+                      "2024-04-10",
+                      "3",
+                      "31, 42, 38"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Ishaan Bhatt",
+                      "MI",
+                      "2024-03-24",
+                      "2024-03-31",
+                      "3",
+                      "35, 40, 50"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Dev Malhotra",
+                      "MI",
+                      "2024-03-26",
+                      "2024-04-18",
+                      "5",
+                      "33, 67, 30, 52, 41"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Kian Thomas",
+                      "KKR",
+                      "2024-04-02",
+                      "2024-04-13",
+                      "3",
+                      "44, 36, 31"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "Ishaan Bhatt",
+                      "MI",
+                      "2024-04-10",
+                      "2024-04-20",
+                      "3",
+                      "33, 60, 44"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "the result is:",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:52"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1490100
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-2---ipl-batting-streaks;the-sample-data-catches-a-query-that-orders-matches-by-match_id,-not-date",
+        "keyword": "Scenario Outline",
+        "line": 39,
+        "name": "The sample data catches a query that orders matches by match_id, not date",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 45600
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1213470500
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 8641099
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"ipl_streaks\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 5335800
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "I run the \"ipl_streaks\" query with \"ORDER BY m.match_date, m.match_id\" changed to \"ORDER BY m.match_id\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiT1JERVIgQlkgbS5tYXRjaF9kYXRlLCBtLm1hdGNoX2lkIiB0byAiT1JERVIgQlkgbS5tYXRjaF9pZCIKCkNvcnJlY3QgcXVlcnk6CnBsYXllcl9uYW1lIHwgc3RyZWFrX3N0YXJ0X2RhdGUKQWFyYXYgTWVub24gfCAyMDI0LTAzLTIyCk5lZWwgQ2hhdHRlcmplZSB8IDIwMjQtMDMtMjIKSXNoYWFuIEJoYXR0IHwgMjAyNC0wMy0yNApEZXYgTWFsaG90cmEgfCAyMDI0LTAzLTI2CktpYW4gVGhvbWFzIHwgMjAyNC0wNC0wMgpJc2hhYW4gQmhhdHQgfCAyMDI0LTA0LTEwCgpDaGFuZ2VkIHF1ZXJ5OgpwbGF5ZXJfbmFtZSB8IHN0cmVha19zdGFydF9kYXRlCkFhcmF2IE1lbm9uIHwgMjAyNC0wMy0yMgpJc2hhYW4gQmhhdHQgfCAyMDI0LTAzLTI0CkRldiBNYWxob3RyYSB8IDIwMjQtMDMtMjYKS2lhbiBUaG9tYXMgfCAyMDI0LTA0LTAyCklzaGFhbiBCaGF0dCB8IDIwMjQtMDQtMTA=",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1100699
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the changed query misses the row starting \"Neel Chatterjee, 2024-03-22\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1303600
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-2---ipl-batting-streaks;the-sample-data-catches-a-query-that-forgets-the-season-filter",
+        "keyword": "Scenario Outline",
+        "line": 40,
+        "name": "The sample data catches a query that forgets the season filter",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 40399
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1123732899
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 8995299
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"ipl_streaks\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 5317600
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "I run the \"ipl_streaks\" query with \"WHERE m.season = 2024\" changed to \"WHERE m.season >= 2023\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiV0hFUkUgbS5zZWFzb24gPSAyMDI0IiB0byAiV0hFUkUgbS5zZWFzb24gPj0gMjAyMyIKCkNvcnJlY3QgcXVlcnk6CnBsYXllcl9uYW1lIHwgc3RyZWFrX3N0YXJ0X2RhdGUKQWFyYXYgTWVub24gfCAyMDI0LTAzLTIyCk5lZWwgQ2hhdHRlcmplZSB8IDIwMjQtMDMtMjIKSXNoYWFuIEJoYXR0IHwgMjAyNC0wMy0yNApEZXYgTWFsaG90cmEgfCAyMDI0LTAzLTI2CktpYW4gVGhvbWFzIHwgMjAyNC0wNC0wMgpJc2hhYW4gQmhhdHQgfCAyMDI0LTA0LTEwCgpDaGFuZ2VkIHF1ZXJ5OgpwbGF5ZXJfbmFtZSB8IHN0cmVha19zdGFydF9kYXRlCkFhcmF2IE1lbm9uIHwgMjAyMy0wNS0xNApBcmp1biBQaWxsYWkgfCAyMDIzLTA1LTE0ClZpaGFhbiBSYW8gfCAyMDIzLTA1LTI2Ck5lZWwgQ2hhdHRlcmplZSB8IDIwMjQtMDMtMjIKSXNoYWFuIEJoYXR0IHwgMjAyNC0wMy0yNApEZXYgTWFsaG90cmEgfCAyMDI0LTAzLTI2CktpYW4gVGhvbWFzIHwgMjAyNC0wNC0wMgpJc2hhYW4gQmhhdHQgfCAyMDI0LTA0LTEw",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 910900
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the changed query adds the row starting \"Arjun Pillai, 2023-05-14\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1147199
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-2---ipl-batting-streaks;the-sample-data-catches-a-query-that-skips-matches-where-the-player-did-not-bat",
+        "keyword": "Scenario Outline",
+        "line": 41,
+        "name": "The sample data catches a query that skips matches where the player did not bat",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 44000
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1131954200
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 9682699
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"ipl_streaks\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 6021500
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "I run the \"ipl_streaks\" query with \"WHERE m.season = 2024\" changed to \"WHERE m.season = 2024 AND b.runs IS NOT NULL\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiV0hFUkUgbS5zZWFzb24gPSAyMDI0IiB0byAiV0hFUkUgbS5zZWFzb24gPSAyMDI0IEFORCBiLnJ1bnMgSVMgTk9UIE5VTEwiCgpDb3JyZWN0IHF1ZXJ5OgpwbGF5ZXJfbmFtZSB8IHN0cmVha19zdGFydF9kYXRlCkFhcmF2IE1lbm9uIHwgMjAyNC0wMy0yMgpOZWVsIENoYXR0ZXJqZWUgfCAyMDI0LTAzLTIyCklzaGFhbiBCaGF0dCB8IDIwMjQtMDMtMjQKRGV2IE1hbGhvdHJhIHwgMjAyNC0wMy0yNgpLaWFuIFRob21hcyB8IDIwMjQtMDQtMDIKSXNoYWFuIEJoYXR0IHwgMjAyNC0wNC0xMAoKQ2hhbmdlZCBxdWVyeToKcGxheWVyX25hbWUgfCBzdHJlYWtfc3RhcnRfZGF0ZQpBYXJhdiBNZW5vbiB8IDIwMjQtMDMtMjIKTmVlbCBDaGF0dGVyamVlIHwgMjAyNC0wMy0yMgpWaWhhYW4gUmFvIHwgMjAyNC0wMy0yMgpJc2hhYW4gQmhhdHQgfCAyMDI0LTAzLTI0CkRldiBNYWxob3RyYSB8IDIwMjQtMDMtMjYKS2lhbiBUaG9tYXMgfCAyMDI0LTA0LTAyCklzaGFhbiBCaGF0dCB8IDIwMjQtMDQtMTA=",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1016500
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the changed query adds the row starting \"Vihaan Rao, 2024-03-22\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1225000
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-2---ipl-batting-streaks;the-sample-data-catches-a-query-that-does-not-count-a-score-of-exactly-30",
+        "keyword": "Scenario Outline",
+        "line": 42,
+        "name": "The sample data catches a query that does not count a score of exactly 30",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 40499
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1180867800
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 8583200
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"ipl_streaks\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 4896600
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "I run the \"ipl_streaks\" query with \"WHERE runs >= 30\" changed to \"WHERE runs > 30\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiV0hFUkUgcnVucyA+PSAzMCIgdG8gIldIRVJFIHJ1bnMgPiAzMCIKCkNvcnJlY3QgcXVlcnk6CnBsYXllcl9uYW1lIHwgc3RyZWFrX3N0YXJ0X2RhdGUKQWFyYXYgTWVub24gfCAyMDI0LTAzLTIyCk5lZWwgQ2hhdHRlcmplZSB8IDIwMjQtMDMtMjIKSXNoYWFuIEJoYXR0IHwgMjAyNC0wMy0yNApEZXYgTWFsaG90cmEgfCAyMDI0LTAzLTI2CktpYW4gVGhvbWFzIHwgMjAyNC0wNC0wMgpJc2hhYW4gQmhhdHQgfCAyMDI0LTA0LTEwCgpDaGFuZ2VkIHF1ZXJ5OgpwbGF5ZXJfbmFtZSB8IHN0cmVha19zdGFydF9kYXRlCk5lZWwgQ2hhdHRlcmplZSB8IDIwMjQtMDMtMjIKSXNoYWFuIEJoYXR0IHwgMjAyNC0wMy0yNApLaWFuIFRob21hcyB8IDIwMjQtMDQtMDIKSXNoYWFuIEJoYXR0IHwgMjAyNC0wNC0xMA==",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 863999
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the changed query misses the row starting \"Aarav Menon, 2024-03-22\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1355799
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-2---ipl-batting-streaks;the-sample-data-catches-a-query-that-needs-more-than-three-matches",
+        "keyword": "Scenario Outline",
+        "line": 43,
+        "name": "The sample data catches a query that needs more than three matches",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 43499
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1212215000
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 21386400
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"ipl_streaks\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 6454299
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "I run the \"ipl_streaks\" query with \"HAVING COUNT(*) >= 3\" changed to \"HAVING COUNT(*) > 3\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiSEFWSU5HIENPVU5UKCopID49IDMiIHRvICJIQVZJTkcgQ09VTlQoKikgPiAzIgoKQ29ycmVjdCBxdWVyeToKcGxheWVyX25hbWUgfCBzdHJlYWtfc3RhcnRfZGF0ZQpBYXJhdiBNZW5vbiB8IDIwMjQtMDMtMjIKTmVlbCBDaGF0dGVyamVlIHwgMjAyNC0wMy0yMgpJc2hhYW4gQmhhdHQgfCAyMDI0LTAzLTI0CkRldiBNYWxob3RyYSB8IDIwMjQtMDMtMjYKS2lhbiBUaG9tYXMgfCAyMDI0LTA0LTAyCklzaGFhbiBCaGF0dCB8IDIwMjQtMDQtMTAKCkNoYW5nZWQgcXVlcnk6CnBsYXllcl9uYW1lIHwgc3RyZWFrX3N0YXJ0X2RhdGUKRGV2IE1hbGhvdHJhIHwgMjAyNC0wMy0yNg==",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1165899
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "the changed query misses the row starting \"Ishaan Bhatt, 2024-03-24\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1315500
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "sql-scenario-2---ipl-batting-streaks",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "SQL scenario 2 - IPL batting streaks",
+    "tags": [
+      {
+        "name": "@sql",
+        "line": 1
+      }
+    ],
+    "uri": "tests\\features\\sql\\ipl-streaks.feature"
+  },
+  {
+    "description": "  Find transfers where account A pays account B and B pays back a similar\n  amount (within 10%) within 24 hours. The query and the sample data are in\n  sql/round_trip_transfers/. Each block of seed.sql is one case.",
+    "elements": [
+      {
+        "description": "",
+        "id": "sql-scenario-1---round-trip-transfers;the-query-finds-exactly-the-round-trips-in-the-sample-data",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "The query finds exactly the round trips in the sample data",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 42399
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1245967599
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 24989800
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"round_trip_transfers\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 5648199
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 11,
+            "name": "I run the \"round_trip_transfers\" query",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:23"
+            },
+            "embeddings": [
+              {
+                "data": "UG9zdGdyZVNRTCAxOC42IChQR2xpdGUgMC41LjEyKQoKb3JpZ2luYWxfdHhuX2lkIHwgcmV0dXJuX3R4bl9pZCB8IGFjY291bnRfYSB8IGFjY291bnRfYiB8IGFtb3VudF9zZW50IHwgYW1vdW50X3JldHVybmVkIHwgcGN0X2RpZmZlcmVuY2UgfCBob3Vyc19hcGFydAoxIHwgMiB8IEFDQy0xMDAxIHwgQUNDLTIwMDEgfCAxMDAwMC4wMCB8IDk1MDAuMDAgfCAtNS4wMCB8IDguNTAKNyB8IDggfCBBQ0MtMTAwNCB8IEFDQy0yMDA0IHwgMTAwMC4wMCB8IDExMDAuMDAgfCAxMC4wMCB8IDI0LjAwCjEzIHwgMTQgfCBBQ0MtMjAwNyB8IEFDQy0xMDA3IHwgMjAwMC4wMCB8IDIwMDAuMDAgfCAwLjAwIHwgMy4wMAoxNSB8IDE2IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNDU1MDAuMDAgfCAtOS4wMCB8IDEwLjAwCjE1IHwgMTcgfCBBQ0MtMTAwOCB8IEFDQy0yMDA4IHwgNTAwMDAuMDAgfCA1NDAwMC4wMCB8IDguMDAgfCAyMy4wMAoyMiB8IDIzIHwgQUNDLTEwMTEgfCBBQ0MtMjAxMSB8IDE1MDAuMDAgfCAxNTAwLjAwIHwgMC4wMCB8IDAuMDA=",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 997500
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "the result has the columns \"original_txn_id, return_txn_id, account_a, account_b, amount_sent, amount_returned, pct_difference, hours_apart\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:48"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 611999
+            },
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "original_txn_id",
+                      "return_txn_id",
+                      "account_a",
+                      "account_b",
+                      "amount_sent",
+                      "amount_returned",
+                      "pct_difference",
+                      "hours_apart"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "1",
+                      "2",
+                      "ACC-1001",
+                      "ACC-2001",
+                      "10000.00",
+                      "9500.00",
+                      "-5.00",
+                      "8.50"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "7",
+                      "8",
+                      "ACC-1004",
+                      "ACC-2004",
+                      "1000.00",
+                      "1100.00",
+                      "10.00",
+                      "24.00"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "13",
+                      "14",
+                      "ACC-2007",
+                      "ACC-1007",
+                      "2000.00",
+                      "2000.00",
+                      "0.00",
+                      "3.00"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "15",
+                      "16",
+                      "ACC-1008",
+                      "ACC-2008",
+                      "50000.00",
+                      "45500.00",
+                      "-9.00",
+                      "10.00"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "15",
+                      "17",
+                      "ACC-1008",
+                      "ACC-2008",
+                      "50000.00",
+                      "54000.00",
+                      "8.00",
+                      "23.00"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "22",
+                      "23",
+                      "ACC-1011",
+                      "ACC-2011",
+                      "1500.00",
+                      "1500.00",
+                      "0.00",
+                      "0.00"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "And ",
+            "line": 13,
+            "name": "the result is:",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:52"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 979099
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-1---round-trip-transfers;the-sample-data-catches-a-query-that-treats-exactly-24-hours-as-too-late",
+        "keyword": "Scenario Outline",
+        "line": 28,
+        "name": "The sample data catches a query that treats exactly 24 hours as too late",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 54000
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1219893399
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 5846400
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"round_trip_transfers\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 6109099
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "I run the \"round_trip_transfers\" query with \"r.txn_time <= o.txn_time + INTERVAL '24 hours'\" changed to \"r.txn_time < o.txn_time + INTERVAL '24 hours'\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAici50eG5fdGltZSA8PSBvLnR4bl90aW1lICsgSU5URVJWQUwgJzI0IGhvdXJzJyIgdG8gInIudHhuX3RpbWUgPCBvLnR4bl90aW1lICsgSU5URVJWQUwgJzI0IGhvdXJzJyIKCkNvcnJlY3QgcXVlcnk6Cm9yaWdpbmFsX3R4bl9pZCB8IHJldHVybl90eG5faWQgfCBhY2NvdW50X2EgfCBhY2NvdW50X2IgfCBhbW91bnRfc2VudCB8IGFtb3VudF9yZXR1cm5lZCB8IHBjdF9kaWZmZXJlbmNlIHwgaG91cnNfYXBhcnQKMSB8IDIgfCBBQ0MtMTAwMSB8IEFDQy0yMDAxIHwgMTAwMDAuMDAgfCA5NTAwLjAwIHwgLTUuMDAgfCA4LjUwCjcgfCA4IHwgQUNDLTEwMDQgfCBBQ0MtMjAwNCB8IDEwMDAuMDAgfCAxMTAwLjAwIHwgMTAuMDAgfCAyNC4wMAoxMyB8IDE0IHwgQUNDLTIwMDcgfCBBQ0MtMTAwNyB8IDIwMDAuMDAgfCAyMDAwLjAwIHwgMC4wMCB8IDMuMDAKMTUgfCAxNiB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDQ1NTAwLjAwIHwgLTkuMDAgfCAxMC4wMAoxNSB8IDE3IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNTQwMDAuMDAgfCA4LjAwIHwgMjMuMDAKMjIgfCAyMyB8IEFDQy0xMDExIHwgQUNDLTIwMTEgfCAxNTAwLjAwIHwgMTUwMC4wMCB8IDAuMDAgfCAwLjAwCgpDaGFuZ2VkIHF1ZXJ5OgpvcmlnaW5hbF90eG5faWQgfCByZXR1cm5fdHhuX2lkIHwgYWNjb3VudF9hIHwgYWNjb3VudF9iIHwgYW1vdW50X3NlbnQgfCBhbW91bnRfcmV0dXJuZWQgfCBwY3RfZGlmZmVyZW5jZSB8IGhvdXJzX2FwYXJ0CjEgfCAyIHwgQUNDLTEwMDEgfCBBQ0MtMjAwMSB8IDEwMDAwLjAwIHwgOTUwMC4wMCB8IC01LjAwIHwgOC41MAoxMyB8IDE0IHwgQUNDLTIwMDcgfCBBQ0MtMTAwNyB8IDIwMDAuMDAgfCAyMDAwLjAwIHwgMC4wMCB8IDMuMDAKMTUgfCAxNiB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDQ1NTAwLjAwIHwgLTkuMDAgfCAxMC4wMAoxNSB8IDE3IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNTQwMDAuMDAgfCA4LjAwIHwgMjMuMDAKMjIgfCAyMyB8IEFDQy0xMDExIHwgQUNDLTIwMTEgfCAxNTAwLjAwIHwgMTUwMC4wMCB8IDAuMDAgfCAwLjAw",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1121999
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "the changed query misses the row starting \"7, 8\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1160399
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-1---round-trip-transfers;the-sample-data-catches-a-query-that-treats-exactly-10%-as-too-much",
+        "keyword": "Scenario Outline",
+        "line": 29,
+        "name": "The sample data catches a query that treats exactly 10% as too much",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 41200
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1242475899
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 22581699
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"round_trip_transfers\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 9446599
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "I run the \"round_trip_transfers\" query with \"ABS(r.amount - o.amount) <= 0.10 * o.amount\" changed to \"ABS(r.amount - o.amount) < 0.10 * o.amount\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiQUJTKHIuYW1vdW50IC0gby5hbW91bnQpIDw9IDAuMTAgKiBvLmFtb3VudCIgdG8gIkFCUyhyLmFtb3VudCAtIG8uYW1vdW50KSA8IDAuMTAgKiBvLmFtb3VudCIKCkNvcnJlY3QgcXVlcnk6Cm9yaWdpbmFsX3R4bl9pZCB8IHJldHVybl90eG5faWQgfCBhY2NvdW50X2EgfCBhY2NvdW50X2IgfCBhbW91bnRfc2VudCB8IGFtb3VudF9yZXR1cm5lZCB8IHBjdF9kaWZmZXJlbmNlIHwgaG91cnNfYXBhcnQKMSB8IDIgfCBBQ0MtMTAwMSB8IEFDQy0yMDAxIHwgMTAwMDAuMDAgfCA5NTAwLjAwIHwgLTUuMDAgfCA4LjUwCjcgfCA4IHwgQUNDLTEwMDQgfCBBQ0MtMjAwNCB8IDEwMDAuMDAgfCAxMTAwLjAwIHwgMTAuMDAgfCAyNC4wMAoxMyB8IDE0IHwgQUNDLTIwMDcgfCBBQ0MtMTAwNyB8IDIwMDAuMDAgfCAyMDAwLjAwIHwgMC4wMCB8IDMuMDAKMTUgfCAxNiB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDQ1NTAwLjAwIHwgLTkuMDAgfCAxMC4wMAoxNSB8IDE3IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNTQwMDAuMDAgfCA4LjAwIHwgMjMuMDAKMjIgfCAyMyB8IEFDQy0xMDExIHwgQUNDLTIwMTEgfCAxNTAwLjAwIHwgMTUwMC4wMCB8IDAuMDAgfCAwLjAwCgpDaGFuZ2VkIHF1ZXJ5OgpvcmlnaW5hbF90eG5faWQgfCByZXR1cm5fdHhuX2lkIHwgYWNjb3VudF9hIHwgYWNjb3VudF9iIHwgYW1vdW50X3NlbnQgfCBhbW91bnRfcmV0dXJuZWQgfCBwY3RfZGlmZmVyZW5jZSB8IGhvdXJzX2FwYXJ0CjEgfCAyIHwgQUNDLTEwMDEgfCBBQ0MtMjAwMSB8IDEwMDAwLjAwIHwgOTUwMC4wMCB8IC01LjAwIHwgOC41MAoxMyB8IDE0IHwgQUNDLTIwMDcgfCBBQ0MtMTAwNyB8IDIwMDAuMDAgfCAyMDAwLjAwIHwgMC4wMCB8IDMuMDAKMTUgfCAxNiB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDQ1NTAwLjAwIHwgLTkuMDAgfCAxMC4wMAoxNSB8IDE3IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNTQwMDAuMDAgfCA4LjAwIHwgMjMuMDAKMjIgfCAyMyB8IEFDQy0xMDExIHwgQUNDLTIwMTEgfCAxNTAwLjAwIHwgMTUwMC4wMCB8IDAuMDAgfCAwLjAw",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1542800
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "the changed query misses the row starting \"7, 8\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1291499
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-1---round-trip-transfers;the-sample-data-catches-a-query-that-measures-10%-against-the-returned-amount",
+        "keyword": "Scenario Outline",
+        "line": 30,
+        "name": "The sample data catches a query that measures 10% against the returned amount",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 40600
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1032170100
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 5404399
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"round_trip_transfers\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 5100800
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "I run the \"round_trip_transfers\" query with \"0.10 * o.amount\" changed to \"0.10 * r.amount\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiMC4xMCAqIG8uYW1vdW50IiB0byAiMC4xMCAqIHIuYW1vdW50IgoKQ29ycmVjdCBxdWVyeToKb3JpZ2luYWxfdHhuX2lkIHwgcmV0dXJuX3R4bl9pZCB8IGFjY291bnRfYSB8IGFjY291bnRfYiB8IGFtb3VudF9zZW50IHwgYW1vdW50X3JldHVybmVkIHwgcGN0X2RpZmZlcmVuY2UgfCBob3Vyc19hcGFydAoxIHwgMiB8IEFDQy0xMDAxIHwgQUNDLTIwMDEgfCAxMDAwMC4wMCB8IDk1MDAuMDAgfCAtNS4wMCB8IDguNTAKNyB8IDggfCBBQ0MtMTAwNCB8IEFDQy0yMDA0IHwgMTAwMC4wMCB8IDExMDAuMDAgfCAxMC4wMCB8IDI0LjAwCjEzIHwgMTQgfCBBQ0MtMjAwNyB8IEFDQy0xMDA3IHwgMjAwMC4wMCB8IDIwMDAuMDAgfCAwLjAwIHwgMy4wMAoxNSB8IDE2IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNDU1MDAuMDAgfCAtOS4wMCB8IDEwLjAwCjE1IHwgMTcgfCBBQ0MtMTAwOCB8IEFDQy0yMDA4IHwgNTAwMDAuMDAgfCA1NDAwMC4wMCB8IDguMDAgfCAyMy4wMAoyMiB8IDIzIHwgQUNDLTEwMTEgfCBBQ0MtMjAxMSB8IDE1MDAuMDAgfCAxNTAwLjAwIHwgMC4wMCB8IDAuMDAKCkNoYW5nZWQgcXVlcnk6Cm9yaWdpbmFsX3R4bl9pZCB8IHJldHVybl90eG5faWQgfCBhY2NvdW50X2EgfCBhY2NvdW50X2IgfCBhbW91bnRfc2VudCB8IGFtb3VudF9yZXR1cm5lZCB8IHBjdF9kaWZmZXJlbmNlIHwgaG91cnNfYXBhcnQKMSB8IDIgfCBBQ0MtMTAwMSB8IEFDQy0yMDAxIHwgMTAwMDAuMDAgfCA5NTAwLjAwIHwgLTUuMDAgfCA4LjUwCjcgfCA4IHwgQUNDLTEwMDQgfCBBQ0MtMjAwNCB8IDEwMDAuMDAgfCAxMTAwLjAwIHwgMTAuMDAgfCAyNC4wMAoxMyB8IDE0IHwgQUNDLTIwMDcgfCBBQ0MtMTAwNyB8IDIwMDAuMDAgfCAyMDAwLjAwIHwgMC4wMCB8IDMuMDAKMTUgfCAxNiB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDQ1NTAwLjAwIHwgLTkuMDAgfCAxMC4wMAoxNSB8IDE3IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNTQwMDAuMDAgfCA4LjAwIHwgMjMuMDAKMjIgfCAyMyB8IEFDQy0xMDExIHwgQUNDLTIwMTEgfCAxNTAwLjAwIHwgMTUwMC4wMCB8IDAuMDAgfCAwLjAwCjI2IHwgMjcgfCBBQ0MtMTAxMiB8IEFDQy0yMDEyIHwgMTAwMC4wMCB8IDExMDUuMDAgfCAxMC41MCB8IDIuMDA=",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 936299
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "the changed query adds the row starting \"26, 27\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1151400
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-1---round-trip-transfers;the-sample-data-catches-a-query-that-lets-the-return-come-before-the-payment",
+        "keyword": "Scenario Outline",
+        "line": 31,
+        "name": "The sample data catches a query that lets the return come before the payment",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 32600
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1041960899
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 5441100
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"round_trip_transfers\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 4945200
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "I run the \"round_trip_transfers\" query with \"(r.txn_time, r.txn_id) > (o.txn_time, o.txn_id)\" changed to \"r.txn_id <> o.txn_id\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiKHIudHhuX3RpbWUsIHIudHhuX2lkKSA+IChvLnR4bl90aW1lLCBvLnR4bl9pZCkiIHRvICJyLnR4bl9pZCA8PiBvLnR4bl9pZCIKCkNvcnJlY3QgcXVlcnk6Cm9yaWdpbmFsX3R4bl9pZCB8IHJldHVybl90eG5faWQgfCBhY2NvdW50X2EgfCBhY2NvdW50X2IgfCBhbW91bnRfc2VudCB8IGFtb3VudF9yZXR1cm5lZCB8IHBjdF9kaWZmZXJlbmNlIHwgaG91cnNfYXBhcnQKMSB8IDIgfCBBQ0MtMTAwMSB8IEFDQy0yMDAxIHwgMTAwMDAuMDAgfCA5NTAwLjAwIHwgLTUuMDAgfCA4LjUwCjcgfCA4IHwgQUNDLTEwMDQgfCBBQ0MtMjAwNCB8IDEwMDAuMDAgfCAxMTAwLjAwIHwgMTAuMDAgfCAyNC4wMAoxMyB8IDE0IHwgQUNDLTIwMDcgfCBBQ0MtMTAwNyB8IDIwMDAuMDAgfCAyMDAwLjAwIHwgMC4wMCB8IDMuMDAKMTUgfCAxNiB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDQ1NTAwLjAwIHwgLTkuMDAgfCAxMC4wMAoxNSB8IDE3IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNTQwMDAuMDAgfCA4LjAwIHwgMjMuMDAKMjIgfCAyMyB8IEFDQy0xMDExIHwgQUNDLTIwMTEgfCAxNTAwLjAwIHwgMTUwMC4wMCB8IDAuMDAgfCAwLjAwCgpDaGFuZ2VkIHF1ZXJ5OgpvcmlnaW5hbF90eG5faWQgfCByZXR1cm5fdHhuX2lkIHwgYWNjb3VudF9hIHwgYWNjb3VudF9iIHwgYW1vdW50X3NlbnQgfCBhbW91bnRfcmV0dXJuZWQgfCBwY3RfZGlmZmVyZW5jZSB8IGhvdXJzX2FwYXJ0CjEgfCAyIHwgQUNDLTEwMDEgfCBBQ0MtMjAwMSB8IDEwMDAwLjAwIHwgOTUwMC4wMCB8IC01LjAwIHwgOC41MAoyIHwgMSB8IEFDQy0yMDAxIHwgQUNDLTEwMDEgfCA5NTAwLjAwIHwgMTAwMDAuMDAgfCA1LjI2IHwgLTguNTAKNiB8IDUgfCBBQ0MtMjAwMyB8IEFDQy0xMDAzIHwgMTk4MDAuMDAgfCAyMDAwMC4wMCB8IDEuMDEgfCAtMjUuMDAKNyB8IDggfCBBQ0MtMTAwNCB8IEFDQy0yMDA0IHwgMTAwMC4wMCB8IDExMDAuMDAgfCAxMC4wMCB8IDI0LjAwCjggfCA3IHwgQUNDLTIwMDQgfCBBQ0MtMTAwNCB8IDExMDAuMDAgfCAxMDAwLjAwIHwgLTkuMDkgfCAtMjQuMDAKMTMgfCAxNCB8IEFDQy0yMDA3IHwgQUNDLTEwMDcgfCAyMDAwLjAwIHwgMjAwMC4wMCB8IDAuMDAgfCAzLjAwCjE0IHwgMTMgfCBBQ0MtMTAwNyB8IEFDQy0yMDA3IHwgMjAwMC4wMCB8IDIwMDAuMDAgfCAwLjAwIHwgLTMuMDAKMTUgfCAxNiB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDQ1NTAwLjAwIHwgLTkuMDAgfCAxMC4wMAoxNSB8IDE3IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNTQwMDAuMDAgfCA4LjAwIHwgMjMuMDAKMTYgfCAxNSB8IEFDQy0yMDA4IHwgQUNDLTEwMDggfCA0NTUwMC4wMCB8IDUwMDAwLjAwIHwgOS44OSB8IC0xMC4wMAoxNyB8IDE1IHwgQUNDLTIwMDggfCBBQ0MtMTAwOCB8IDU0MDAwLjAwIHwgNTAwMDAuMDAgfCAtNy40MSB8IC0yMy4wMAoyMSB8IDIwIHwgQUNDLTIwMTAgfCBBQ0MtMTAxMCB8IDgwMDAuMDAgfCA4MDAwLjAwIHwgMC4wMCB8IC0yNC4wMAoyMyB8IDIyIHwgQUNDLTIwMTEgfCBBQ0MtMTAxMSB8IDE1MDAuMDAgfCAxNTAwLjAwIHwgMC4wMCB8IDAuMDAKMjIgfCAyMyB8IEFDQy0xMDExIHwgQUNDLTIwMTEgfCAxNTAwLjAwIHwgMTUwMC4wMCB8IDAuMDAgfCAwLjAwCjI1IHwgMSB8IEFDQy0yMDAxIHwgQUNDLTEwMDEgfCA5OTAwLjAwIHwgMTAwMDAuMDAgfCAxLjAxIHwgLTQ2Mi4wMAoyNyB8IDI2IHwgQUNDLTIwMTIgfCBBQ0MtMTAxMiB8IDExMDUuMDAgfCAxMDAwLjAwIHwgLTkuNTAgfCAtMi4wMA==",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 839500
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "the changed query adds the row starting \"2, 1\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 896400
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sql-scenario-1---round-trip-transfers;the-sample-data-catches-a-query-that-drops-transfers-that-share-a-timestamp",
+        "keyword": "Scenario Outline",
+        "line": 32,
+        "name": "The sample data catches a query that drops transfers that share a timestamp",
+        "steps": [
+          {
+            "result": {
+              "status": "passed",
+              "duration": 24900
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1010914800
+            },
+            "keyword": "Before",
+            "hidden": true
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 6110499
+            },
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "a fresh PostgreSQL database with the \"round_trip_transfers\" tables and sample data",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:16"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 5319800
+            },
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "I run the \"round_trip_transfers\" query with \"(r.txn_time, r.txn_id) > (o.txn_time, o.txn_id)\" changed to \"r.txn_time > o.txn_time\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:37"
+            },
+            "embeddings": [
+              {
+                "data": "Q2hhbmdlZCAiKHIudHhuX3RpbWUsIHIudHhuX2lkKSA+IChvLnR4bl90aW1lLCBvLnR4bl9pZCkiIHRvICJyLnR4bl90aW1lID4gby50eG5fdGltZSIKCkNvcnJlY3QgcXVlcnk6Cm9yaWdpbmFsX3R4bl9pZCB8IHJldHVybl90eG5faWQgfCBhY2NvdW50X2EgfCBhY2NvdW50X2IgfCBhbW91bnRfc2VudCB8IGFtb3VudF9yZXR1cm5lZCB8IHBjdF9kaWZmZXJlbmNlIHwgaG91cnNfYXBhcnQKMSB8IDIgfCBBQ0MtMTAwMSB8IEFDQy0yMDAxIHwgMTAwMDAuMDAgfCA5NTAwLjAwIHwgLTUuMDAgfCA4LjUwCjcgfCA4IHwgQUNDLTEwMDQgfCBBQ0MtMjAwNCB8IDEwMDAuMDAgfCAxMTAwLjAwIHwgMTAuMDAgfCAyNC4wMAoxMyB8IDE0IHwgQUNDLTIwMDcgfCBBQ0MtMTAwNyB8IDIwMDAuMDAgfCAyMDAwLjAwIHwgMC4wMCB8IDMuMDAKMTUgfCAxNiB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDQ1NTAwLjAwIHwgLTkuMDAgfCAxMC4wMAoxNSB8IDE3IHwgQUNDLTEwMDggfCBBQ0MtMjAwOCB8IDUwMDAwLjAwIHwgNTQwMDAuMDAgfCA4LjAwIHwgMjMuMDAKMjIgfCAyMyB8IEFDQy0xMDExIHwgQUNDLTIwMTEgfCAxNTAwLjAwIHwgMTUwMC4wMCB8IDAuMDAgfCAwLjAwCgpDaGFuZ2VkIHF1ZXJ5OgpvcmlnaW5hbF90eG5faWQgfCByZXR1cm5fdHhuX2lkIHwgYWNjb3VudF9hIHwgYWNjb3VudF9iIHwgYW1vdW50X3NlbnQgfCBhbW91bnRfcmV0dXJuZWQgfCBwY3RfZGlmZmVyZW5jZSB8IGhvdXJzX2FwYXJ0CjEgfCAyIHwgQUNDLTEwMDEgfCBBQ0MtMjAwMSB8IDEwMDAwLjAwIHwgOTUwMC4wMCB8IC01LjAwIHwgOC41MAo3IHwgOCB8IEFDQy0xMDA0IHwgQUNDLTIwMDQgfCAxMDAwLjAwIHwgMTEwMC4wMCB8IDEwLjAwIHwgMjQuMDAKMTMgfCAxNCB8IEFDQy0yMDA3IHwgQUNDLTEwMDcgfCAyMDAwLjAwIHwgMjAwMC4wMCB8IDAuMDAgfCAzLjAwCjE1IHwgMTYgfCBBQ0MtMTAwOCB8IEFDQy0yMDA4IHwgNTAwMDAuMDAgfCA0NTUwMC4wMCB8IC05LjAwIHwgMTAuMDAKMTUgfCAxNyB8IEFDQy0xMDA4IHwgQUNDLTIwMDggfCA1MDAwMC4wMCB8IDU0MDAwLjAwIHwgOC4wMCB8IDIzLjAw",
+                "mime_type": "text/plain"
+              }
+            ]
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 960800
+            },
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "the changed query misses the row starting \"22, 23\"",
+            "match": {
+              "location": "tests\\steps\\sql.steps.ts:58"
+            }
+          },
+          {
+            "result": {
+              "status": "passed",
+              "duration": 1121100
+            },
+            "keyword": "After",
+            "hidden": true
+          }
+        ],
+        "tags": [
+          {
+            "name": "@sql",
+            "line": 1
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "sql-scenario-1---round-trip-transfers",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "SQL scenario 1 - round-trip transfers",
+    "tags": [
+      {
+        "name": "@sql",
+        "line": 1
+      }
+    ],
+    "uri": "tests\\features\\sql\\round-trip-transfers.feature"
+  }
+]

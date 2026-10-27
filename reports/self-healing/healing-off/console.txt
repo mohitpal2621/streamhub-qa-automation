@@ -1,0 +1,44 @@
+
+Feature: Self-healing demo with deliberately broken locators
+
+  @ui @self-healing
+  Scenario: Work out a personal loan EMI through four broken locators          # tests\features\self-healing\brittle-locators.feature:10
+    ✔ Given I open the EMI calculator                                          # tests\steps\emi-calculator.steps.ts:29
+    ✘ When I open the Personal Loan tab through its brittle locator            # tests\steps\self-healing.steps.ts:28
+          locator.click: Timeout 5000ms exceeded.
+          Call log:
+          [2m  - waiting for locator('xpath=/html/body/div[1]/div[3]/div/div[1]/div[1]/ul/li[2]/a')[22m
+          
+              at BrittleEmiCalculatorPage.openPersonalLoanTab (D:\Assessments\Streamhub-QA-Automation\tests\pages\BrittleEmiCalculatorPage.ts:60:77)
+              at async TestWorld.<anonymous> (D:\Assessments\Streamhub-QA-Automation\tests\steps\self-healing.steps.ts:29:3)
+    ↷ And I type 10L into the loan amount box through its brittle locator      # tests\steps\self-healing.steps.ts:32
+    ↷ And I type 12% into the interest rate box through its brittle locator    # tests\steps\self-healing.steps.ts:37
+    ↷ And I set the tenure to 5 years                                          # tests\steps\self-healing.steps.ts:45
+    ↷ Then the EMI read through its brittle locator matches my own calculation # tests\steps\self-healing.steps.ts:52
+
+          Embedding work-out-a-personal-loan-emi-through-four-broken-locators--failure.png [image/png 115038 bytes]
+
+
+          Playwright trace: reports\self-healing\healing-off\traces\Work_out_a_personal_loan_EMI_through_four_broken_locators.zip (open with: npx playwright show-trace reports\self-healing\healing-off\traces\Work_out_a_personal_loan_EMI_through_four_broken_locators.zip)
+
+
+  @ui @self-healing
+  Scenario: A locator for a button the page does not have is not healed          # tests\features\self-healing\brittle-locators.feature:18
+    ✔ Given I open the EMI calculator                                            # tests\steps\emi-calculator.steps.ts:29
+    ✔ Then clicking the "Calculate EMI" button through its brittle locator fails # tests\steps\self-healing.steps.ts:59
+    ✔ And no replacement was accepted for the "calculateButton" locator          # tests\steps\self-healing.steps.ts:63
+
+Failed scenarios:
+  1) Work out a personal loan EMI through four broken locators # tests\features\self-healing\brittle-locators.feature:10
+       When I open the Personal Loan tab through its brittle locator # tests\steps\self-healing.steps.ts:28
+           locator.click: Timeout 5000ms exceeded.
+           Call log:
+           [2m  - waiting for locator('xpath=/html/body/div[1]/div[3]/div/div[1]/div[1]/ul/li[2]/a')[22m
+           
+               at BrittleEmiCalculatorPage.openPersonalLoanTab (D:\Assessments\Streamhub-QA-Automation\tests\pages\BrittleEmiCalculatorPage.ts:60:77)
+               at async TestWorld.<anonymous> (D:\Assessments\Streamhub-QA-Automation\tests\steps\self-healing.steps.ts:29:3)
+
+1 hook (1 passed)
+2 scenarios (1 passed, 1 failed)
+19 steps (14 passed, 4 skipped, 1 failed)
+0m 18.831s (0m 18.805s executing your code)

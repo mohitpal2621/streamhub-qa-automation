@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<testsuite name="Cucumber" time="18.831" tests="2" skipped="0" failures="1" errors="0" timestamp="2026-10-27T18:52:36.154Z">
+  <testcase classname="Self-healing demo with deliberately broken locators" name="Work out a personal loan EMI through four broken locators" time="9.8">
+    <failure type="TimeoutError2" message="locator.click: Timeout 5000ms exceeded.&#xA;Call log:&#xA;[2m  - waiting for locator('xpath=/html/body/div[1]/div[3]/div/div[1]/div[1]/ul/li[2]/a')[22m&#xA;"><![CDATA[locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('xpath=/html/body/div[1]/div[3]/div/div[1]/div[1]/ul/li[2]/a')[22m
+
+    at BrittleEmiCalculatorPage.openPersonalLoanTab (D:\Assessments\Streamhub-QA-Automation\tests\pages\BrittleEmiCalculatorPage.ts:60:77)
+    at async TestWorld.<anonymous> (D:\Assessments\Streamhub-QA-Automation\tests\steps\self-healing.steps.ts:29:3)]]></failure>
+    <system-out><![CDATA[Given I open the EMI calculator.............................................passed
+When I open the Personal Loan tab through its brittle locator...............failed
+And I type 10L into the loan amount box through its brittle locator.........skipped
+And I type 12% into the interest rate box through its brittle locator.......skipped
+And I set the tenure to 5 years.............................................skipped
+Then the EMI read through its brittle locator matches my own calculation....skipped]]></system-out>
+  </testcase>
+  <testcase classname="Self-healing demo with deliberately broken locators" name="A locator for a button the page does not have is not healed" time="8.946">
+    <system-out><![CDATA[Given I open the EMI calculator.............................................passed
+Then clicking the "Calculate EMI" button through its brittle locator fails..passed
+And no replacement was accepted for the "calculateButton" locator...........passed]]></system-out>
+  </testcase>
+</testsuite>

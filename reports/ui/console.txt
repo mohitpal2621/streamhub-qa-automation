@@ -1,0 +1,97 @@
+
+Feature: Personal loan payment schedule bar chart
+
+  @ui
+  Scenario: 10L personal loan at 12% for 5 years, starting June 2027                                       # tests\features\ui\emi-bar-chart.feature:7
+    ✔ Given I open the EMI calculator                                                                      # tests\steps\emi-calculator.steps.ts:29
+    ✔ And I open the "Personal Loan" tab                                                                   # tests\steps\emi-calculator.steps.ts:33
+    ✔ When I drag the sliders to a loan amount of 10L, an interest rate of 12% and a tenure of 5 years     # tests\steps\emi-calculator.steps.ts:46
+    ✔ And I change the schedule start month to "Jun 2027"                                                  # tests\steps\emi-calculator.steps.ts:54
+
+          Loan: ₹10,00,000 at 12% for 5 years
+          EMI            expected ₹22,244  shown ₹22,244
+          Total interest expected ₹3,34,667  shown ₹3,34,667
+          Total payment  expected ₹13,34,667  shown ₹13,34,667
+
+
+          Embedding 10l-personal-loan-at-12-for-5-years-starting-june-2027--calculated-emi.png [image/png 61449 bytes]
+
+    ✔ Then the EMI, total interest and total payment match my own calculation                              # tests\steps\emi-calculator.steps.ts:60
+
+          Embedding 10l-personal-loan-at-12-for-5-years-starting-june-2027--bar-chart.png [image/png 22461 bytes]
+
+    ✔ And the payment schedule bar chart is visible                                                        # tests\steps\emi-calculator.steps.ts:126
+
+          6 bars (2027-2032). Each bar stacks a Principal and an Interest segment, so the chart draws 12 segments. Payments per year in my schedule: 2027: 7, 2028: 12, 2029: 12, 2030: 12, 2031: 12, 2032: 5
+
+    ✔ And the bar chart has 6 bars, one for each year from 2027 to 2032                                    # tests\steps\emi-calculator.steps.ts:136
+
+          Embedding 10l-personal-loan-at-12-for-5-years-starting-june-2027--tooltip-principal-2028.png [image/png 24387 bytes]
+
+
+          Embedding 10l-personal-loan-at-12-for-5-years-starting-june-2027--tooltip-interest-2028.png [image/png 24450 bytes]
+
+
+          Principal bar tooltip: {"heading":"Year : 2028","values":{"Principal":"₹ 1,66,492","Total Payment":"₹ 2,66,933"}}
+          Interest bar tooltip: {"heading":"Year : 2028","values":{"Interest":"₹ 1,00,441","Total Payment":"₹ 2,66,933"}}
+
+    ✔ And the tooltip of the 2028 bar shows the principal, interest and total payment from my own schedule # tests\steps\emi-calculator.steps.ts:156
+
+Feature: Home loan EMI and the payment break-up pie chart
+
+  @ui
+  Scenario Outline: Scenario A: 25L at 10% for 10 years                                           # tests\features\ui\emi-pie-chart.feature:20
+    ✔ Given I open the EMI calculator                                                             # tests\steps\emi-calculator.steps.ts:29
+    ✔ And I open the "Home Loan" tab                                                              # tests\steps\emi-calculator.steps.ts:33
+    ✔ When I enter a loan amount of 25L, an interest rate of 10% and a tenure of 10 years         # tests\steps\emi-calculator.steps.ts:38
+
+          Loan: ₹25,00,000 at 10% for 10 years
+          EMI            expected ₹33,038  shown ₹33,038
+          Total interest expected ₹14,64,522  shown ₹14,64,522
+          Total payment  expected ₹39,64,522  shown ₹39,64,522
+
+
+          Embedding scenario-a-25l-at-10-for-10-years--calculated-emi.png [image/png 63879 bytes]
+
+    ✔ Then the EMI, total interest and total payment match my own calculation                     # tests\steps\emi-calculator.steps.ts:60
+
+          Embedding scenario-a-25l-at-10-for-10-years--pie-chart.png [image/png 10047 bytes]
+
+    ✔ And the payment break-up pie chart is visible                                               # tests\steps\emi-calculator.steps.ts:84
+
+          Principal Loan Amount: label "63.1%", value ₹25,00,000
+          Total Interest: label "36.9%", value ₹14,64,522
+
+    ✔ And both sections of the pie chart show values greater than zero                            # tests\steps\emi-calculator.steps.ts:95
+    ✔ And the pie chart splits the total payment into the principal and the interest I calculated # tests\steps\emi-calculator.steps.ts:105
+
+  @ui
+  Scenario Outline: Scenario B: 50L at 7.5% for 15 years                                          # tests\features\ui\emi-pie-chart.feature:21
+    ✔ Given I open the EMI calculator                                                             # tests\steps\emi-calculator.steps.ts:29
+    ✔ And I open the "Home Loan" tab                                                              # tests\steps\emi-calculator.steps.ts:33
+    ✔ When I enter a loan amount of 50L, an interest rate of 7.5% and a tenure of 15 years        # tests\steps\emi-calculator.steps.ts:38
+
+          Loan: ₹50,00,000 at 7.5% for 15 years
+          EMI            expected ₹46,351  shown ₹46,351
+          Total interest expected ₹33,43,111  shown ₹33,43,111
+          Total payment  expected ₹83,43,111  shown ₹83,43,111
+
+
+          Embedding scenario-b-50l-at-7-5-for-15-years--calculated-emi.png [image/png 62592 bytes]
+
+    ✔ Then the EMI, total interest and total payment match my own calculation                     # tests\steps\emi-calculator.steps.ts:60
+
+          Embedding scenario-b-50l-at-7-5-for-15-years--pie-chart.png [image/png 10176 bytes]
+
+    ✔ And the payment break-up pie chart is visible                                               # tests\steps\emi-calculator.steps.ts:84
+
+          Principal Loan Amount: label "59.9%", value ₹50,00,000
+          Total Interest: label "40.1%", value ₹33,43,111
+
+    ✔ And both sections of the pie chart show values greater than zero                            # tests\steps\emi-calculator.steps.ts:95
+    ✔ And the pie chart splits the total payment into the principal and the interest I calculated # tests\steps\emi-calculator.steps.ts:105
+
+1 hook (1 passed)
+3 scenarios (3 passed)
+31 steps (31 passed)
+0m 45.469s (0m 45.436s executing your code)

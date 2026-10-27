@@ -1,0 +1,254 @@
+[
+  {
+    "key": "personalLoanTab",
+    "scenario": "Work out a personal loan EMI through four broken locators",
+    "step": "open the Personal Loan tab",
+    "selector": "xpath=/html/body/div[1]/div[3]/div/div[1]/div[1]/ul/li[2]/a",
+    "intent": "the \"Personal Loan\" tab at the top of the loan calculator",
+    "why": "An absolute XPath of the kind \"Copy XPath\" in DevTools produces. Every index depends on the layout above the calculator (ad slots, wrapper divs), so any change there breaks it. This one no longer matches anything.",
+    "matches": 0,
+    "healer": "claude (claude-opus-5-5 via Claude Code)",
+    "proposals": [
+      {
+        "spec": {
+          "strategy": "role",
+          "role": "link",
+          "name": "Personal Loan",
+          "exact": true
+        },
+        "confidence": 0.95,
+        "reason": "Only link with accessible name exactly 'Personal Loan' (ref 8), inside the calculator tab li#personal-loan.",
+        "code": "page.getByRole('link', { name: 'Personal Loan', exact: true })",
+        "checks": [
+          {
+            "name": "confidence of at least 0.5",
+            "passed": true,
+            "detail": "0.95"
+          },
+          {
+            "name": "not positional",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "matches exactly one element",
+            "passed": true,
+            "detail": "1 match(es)"
+          },
+          {
+            "name": "visible",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "role is link",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "accessible name matches /^Personal Loan$/",
+            "passed": true,
+            "detail": "ok"
+          }
+        ],
+        "accepted": true
+      }
+    ],
+    "outcome": "healed",
+    "confirmedAfterAction": true,
+    "replacement": "page.getByRole('link', { name: 'Personal Loan', exact: true })"
+  },
+  {
+    "key": "loanAmount",
+    "scenario": "Work out a personal loan EMI through four broken locators",
+    "step": "type the loan amount",
+    "selector": "#personal-loan-amount",
+    "intent": "the \"Personal Loan Amount\" text box",
+    "why": "A plausible id guessed from the label text, the kind an AI assistant writes without looking at the DOM. The real id is \"loanamount\".",
+    "matches": 0,
+    "healer": "claude (claude-opus-5-5 via Claude Code)",
+    "proposals": [
+      {
+        "spec": {
+          "strategy": "role",
+          "role": "textbox",
+          "name": "Personal Loan Amount",
+          "exact": true
+        },
+        "confidence": 0.95,
+        "reason": "ref 10: input textbox with accessible name 'Personal Loan Amount', unique match",
+        "code": "page.getByRole('textbox', { name: 'Personal Loan Amount', exact: true })",
+        "checks": [
+          {
+            "name": "confidence of at least 0.5",
+            "passed": true,
+            "detail": "0.95"
+          },
+          {
+            "name": "not positional",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "matches exactly one element",
+            "passed": true,
+            "detail": "1 match(es)"
+          },
+          {
+            "name": "visible",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "role is textbox",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "accessible name matches /Loan Amount/",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "editable",
+            "passed": true,
+            "detail": "ok"
+          }
+        ],
+        "accepted": true
+      }
+    ],
+    "outcome": "healed",
+    "confirmedAfterAction": true,
+    "replacement": "page.getByRole('textbox', { name: 'Personal Loan Amount', exact: true })"
+  },
+  {
+    "key": "interestRate",
+    "scenario": "Work out a personal loan EMI through four broken locators",
+    "step": "type the interest rate",
+    "selector": "input[name=\"interest_rate\"]",
+    "intent": "the \"Interest Rate\" text box",
+    "why": "A guessed snake_case name attribute. The page uses name=\"loaninterest\".",
+    "matches": 0,
+    "healer": "claude (claude-opus-5-5 via Claude Code)",
+    "proposals": [
+      {
+        "spec": {
+          "strategy": "role",
+          "role": "textbox",
+          "name": "Interest Rate",
+          "exact": true
+        },
+        "confidence": 0.96,
+        "reason": "Ref 11 is an input with role textbox and accessible name 'Interest Rate'. No other textbox has this exact name.",
+        "code": "page.getByRole('textbox', { name: 'Interest Rate', exact: true })",
+        "checks": [
+          {
+            "name": "confidence of at least 0.5",
+            "passed": true,
+            "detail": "0.96"
+          },
+          {
+            "name": "not positional",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "matches exactly one element",
+            "passed": true,
+            "detail": "1 match(es)"
+          },
+          {
+            "name": "visible",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "role is textbox",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "accessible name matches /Interest Rate/",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "editable",
+            "passed": true,
+            "detail": "ok"
+          }
+        ],
+        "accepted": true
+      }
+    ],
+    "outcome": "healed",
+    "confirmedAfterAction": true,
+    "replacement": "page.getByRole('textbox', { name: 'Interest Rate', exact: true })"
+  },
+  {
+    "key": "emiValue",
+    "scenario": "Work out a personal loan EMI through four broken locators",
+    "step": "read the monthly EMI",
+    "selector": "#emipaymentsummary > div:nth-child(1) > p > span:nth-child(2)",
+    "intent": "the monthly EMI amount under the \"Loan EMI\" heading",
+    "why": "Positional CSS that is off by one: the ₹ sign before the amount is a text node, not an element, so the amount is the first span in the paragraph, not the second.",
+    "matches": 0,
+    "healer": "claude (claude-opus-5-5 via Claude Code)",
+    "proposals": [
+      {
+        "spec": {
+          "strategy": "css",
+          "selector": "#emiamount p span"
+        },
+        "confidence": 0.9,
+        "reason": "Span 22,244 (ref 141) inside the #emiamount block under the 'Loan EMI' heading. The stable id scopes it, and the text matches the required pattern.",
+        "code": "page.locator('#emiamount p span')",
+        "checks": [
+          {
+            "name": "confidence of at least 0.5",
+            "passed": true,
+            "detail": "0.9"
+          },
+          {
+            "name": "not positional",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "matches exactly one element",
+            "passed": true,
+            "detail": "1 match(es)"
+          },
+          {
+            "name": "visible",
+            "passed": true,
+            "detail": "ok"
+          },
+          {
+            "name": "text matches /^₹?\\s?\\d{1,3}(,\\d{2,3})*$/",
+            "passed": true,
+            "detail": "ok"
+          }
+        ],
+        "accepted": true
+      }
+    ],
+    "outcome": "healed",
+    "confirmedAfterAction": true,
+    "replacement": "page.locator('#emiamount p span')"
+  },
+  {
+    "key": "calculateButton",
+    "scenario": "A locator for a button the page does not have is not healed",
+    "step": "click Calculate EMI",
+    "selector": "role=button[name=\"Calculate EMI\"]",
+    "intent": "a \"Calculate EMI\" button that recalculates the loan",
+    "why": "There is no such button: the calculator recalculates when a field loses focus. Nothing on the page should be accepted in its place.",
+    "matches": 0,
+    "healer": "claude (claude-opus-5-5 via Claude Code)",
+    "proposals": [],
+    "outcome": "refused",
+    "confirmedAfterAction": false
+  }
+]

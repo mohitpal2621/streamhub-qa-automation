@@ -1,0 +1,25 @@
+
+Feature: Self-healing demo with deliberately broken locators
+
+  @ui @self-healing
+  Scenario: Work out a personal loan EMI through four broken locators          # tests\features\self-healing\brittle-locators.feature:10
+    ✔ Given I open the EMI calculator                                          # tests\steps\emi-calculator.steps.ts:29
+    ✔ When I open the Personal Loan tab through its brittle locator            # tests\steps\self-healing.steps.ts:28
+    ✔ And I type 10L into the loan amount box through its brittle locator      # tests\steps\self-healing.steps.ts:32
+    ✔ And I type 12% into the interest rate box through its brittle locator    # tests\steps\self-healing.steps.ts:37
+    ✔ And I set the tenure to 5 years                                          # tests\steps\self-healing.steps.ts:45
+
+          Embedding work-out-a-personal-loan-emi-through-four-broken-locators--emi-read-through-healed-locators.png [image/png 61452 bytes]
+
+    ✔ Then the EMI read through its brittle locator matches my own calculation # tests\steps\self-healing.steps.ts:52
+
+  @ui @self-healing
+  Scenario: A locator for a button the page does not have is not healed          # tests\features\self-healing\brittle-locators.feature:18
+    ✔ Given I open the EMI calculator                                            # tests\steps\emi-calculator.steps.ts:29
+    ✔ Then clicking the "Calculate EMI" button through its brittle locator fails # tests\steps\self-healing.steps.ts:59
+    ✔ And no replacement was accepted for the "calculateButton" locator          # tests\steps\self-healing.steps.ts:63
+
+1 hook (1 passed)
+2 scenarios (2 passed)
+19 steps (19 passed)
+1m 44.097s (1m 44.051s executing your code)

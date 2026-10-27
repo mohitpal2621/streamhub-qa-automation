@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<testsuite name="Cucumber" time="16.176" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-27T18:51:29.921Z">
+  <testcase classname="SQL scenario 2 - IPL batting streaks" name="The query returns each streak once, with its start date" time="1.968">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data..passed
+When I run the "ipl_streaks" query..........................................passed
+Then the result has the columns "player_name, streak_start_date"............passed
+And the result is:..........................................................passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 2 - IPL batting streaks" name="Each streak is a run of consecutive 30+ scores" time="1.275">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data..passed
+When I run the "ipl_streaks" details query..................................passed
+Then the result is:.........................................................passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 2 - IPL batting streaks" name="The sample data catches a query that &lt;mistake> - #1.1: The sample data catches a query that orders matches by match_id, not date" time="1.234">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data..passed
+When I run the "ipl_streaks" query with "ORDER BY m.match_date, m.match_id" changed to "ORDER BY m.match_id"..passed
+Then the changed query misses the row starting "Neel Chatterjee, 2024-03-22"..passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 2 - IPL batting streaks" name="The sample data catches a query that &lt;mistake> - #1.2: The sample data catches a query that forgets the season filter" time="1.143">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data..passed
+When I run the "ipl_streaks" query with "WHERE m.season = 2024" changed to "WHERE m.season >= 2023"..passed
+Then the changed query adds the row starting "Arjun Pillai, 2023-05-14".....passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 2 - IPL batting streaks" name="The sample data catches a query that &lt;mistake> - #1.3: The sample data catches a query that skips matches where the player did not bat" time="1.153">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data..passed
+When I run the "ipl_streaks" query with "WHERE m.season = 2024" changed to "WHERE m.season = 2024 AND b.runs IS NOT NULL"..passed
+Then the changed query adds the row starting "Vihaan Rao, 2024-03-22".......passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 2 - IPL batting streaks" name="The sample data catches a query that &lt;mistake> - #1.4: The sample data catches a query that does not count a score of exactly 30" time="1.199">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data..passed
+When I run the "ipl_streaks" query with "WHERE runs >= 30" changed to "WHERE runs > 30"..passed
+Then the changed query misses the row starting "Aarav Menon, 2024-03-22"....passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 2 - IPL batting streaks" name="The sample data catches a query that &lt;mistake> - #1.5: The sample data catches a query that needs more than three matches" time="1.246">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data..passed
+When I run the "ipl_streaks" query with "HAVING COUNT(*) >= 3" changed to "HAVING COUNT(*) > 3"..passed
+Then the changed query misses the row starting "Ishaan Bhatt, 2024-03-24"...passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 1 - round-trip transfers" name="The query finds exactly the round trips in the sample data" time="1.282">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data..passed
+When I run the "round_trip_transfers" query.................................passed
+Then the result has the columns "original_txn_id, return_txn_id, account_a, account_b, amount_sent, amount_returned, pct_difference, hours_apart"..passed
+And the result is:..........................................................passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 1 - round-trip transfers" name="The sample data catches a query that &lt;mistake> - #1.1: The sample data catches a query that treats exactly 24 hours as too late" time="1.237">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data..passed
+When I run the "round_trip_transfers" query with "r.txn_time <= o.txn_time + INTERVAL '24 hours'" changed to "r.txn_time < o.txn_time + INTERVAL '24 hours'"..passed
+Then the changed query misses the row starting "7, 8".......................passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 1 - round-trip transfers" name="The sample data catches a query that &lt;mistake> - #1.2: The sample data catches a query that treats exactly 10% as too much" time="1.281">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data..passed
+When I run the "round_trip_transfers" query with "ABS(r.amount - o.amount) <= 0.10 * o.amount" changed to "ABS(r.amount - o.amount) < 0.10 * o.amount"..passed
+Then the changed query misses the row starting "7, 8".......................passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 1 - round-trip transfers" name="The sample data catches a query that &lt;mistake> - #1.3: The sample data catches a query that measures 10% against the returned amount" time="1.048">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data..passed
+When I run the "round_trip_transfers" query with "0.10 * o.amount" changed to "0.10 * r.amount"..passed
+Then the changed query adds the row starting "26, 27".......................passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 1 - round-trip transfers" name="The sample data catches a query that &lt;mistake> - #1.4: The sample data catches a query that lets the return come before the payment" time="1.057">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data..passed
+When I run the "round_trip_transfers" query with "(r.txn_time, r.txn_id) > (o.txn_time, o.txn_id)" changed to "r.txn_id <> o.txn_id"..passed
+Then the changed query adds the row starting "2, 1".........................passed]]></system-out>
+  </testcase>
+  <testcase classname="SQL scenario 1 - round-trip transfers" name="The sample data catches a query that &lt;mistake> - #1.5: The sample data catches a query that drops transfers that share a timestamp" time="1.027">
+    <system-out><![CDATA[Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data..passed
+When I run the "round_trip_transfers" query with "(r.txn_time, r.txn_id) > (o.txn_time, o.txn_id)" changed to "r.txn_time > o.txn_time"..passed
+Then the changed query misses the row starting "22, 23".....................passed]]></system-out>
+  </testcase>
+</testsuite>

@@ -1,0 +1,354 @@
+
+Feature: SQL scenario 2 - IPL batting streaks
+
+  @sql
+  Scenario: The query returns each streak once, with its start date                   # tests\features\sql\ipl-streaks.feature:10
+    ✔ Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data # tests\steps\sql.steps.ts:16
+
+          PostgreSQL 18.6 (PGlite 0.5.12)
+          
+          player_name | streak_start_date
+          Aarav Menon | 2024-03-22
+          Neel Chatterjee | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+
+    ✔ When I run the "ipl_streaks" query                                              # tests\steps\sql.steps.ts:23
+    ✔ Then the result has the columns "player_name, streak_start_date"                # tests\steps\sql.steps.ts:48
+    ✔ And the result is:                                                              # tests\steps\sql.steps.ts:52
+        | player_name     | streak_start_date |
+        | Aarav Menon     | 2024-03-22        |
+        | Neel Chatterjee | 2024-03-22        |
+        | Ishaan Bhatt    | 2024-03-24        |
+        | Dev Malhotra    | 2024-03-26        |
+        | Kian Thomas     | 2024-04-02        |
+        | Ishaan Bhatt    | 2024-04-10        |
+
+  @sql
+  Scenario: Each streak is a run of consecutive 30+ scores                            # tests\features\sql\ipl-streaks.feature:22
+    ✔ Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data # tests\steps\sql.steps.ts:16
+
+          player_name | team | streak_start_date | streak_end_date | matches_in_streak | runs
+          Aarav Menon | CSK | 2024-03-22 | 2024-03-31 | 3 | 30, 45, 31
+          Neel Chatterjee | RCB | 2024-03-22 | 2024-04-10 | 3 | 31, 42, 38
+          Ishaan Bhatt | MI | 2024-03-24 | 2024-03-31 | 3 | 35, 40, 50
+          Dev Malhotra | MI | 2024-03-26 | 2024-04-18 | 5 | 33, 67, 30, 52, 41
+          Kian Thomas | KKR | 2024-04-02 | 2024-04-13 | 3 | 44, 36, 31
+          Ishaan Bhatt | MI | 2024-04-10 | 2024-04-20 | 3 | 33, 60, 44
+
+    ✔ When I run the "ipl_streaks" details query                                      # tests\steps\sql.steps.ts:28
+    ✔ Then the result is:                                                             # tests\steps\sql.steps.ts:52
+        | player_name     | team | streak_start_date | streak_end_date | matches_in_streak | runs               |
+        | Aarav Menon     | CSK  | 2024-03-22        | 2024-03-31      | 3                 | 30, 45, 31         |
+        | Neel Chatterjee | RCB  | 2024-03-22        | 2024-04-10      | 3                 | 31, 42, 38         |
+        | Ishaan Bhatt    | MI   | 2024-03-24        | 2024-03-31      | 3                 | 35, 40, 50         |
+        | Dev Malhotra    | MI   | 2024-03-26        | 2024-04-18      | 5                 | 33, 67, 30, 52, 41 |
+        | Kian Thomas     | KKR  | 2024-04-02        | 2024-04-13      | 3                 | 44, 36, 31         |
+        | Ishaan Bhatt    | MI   | 2024-04-10        | 2024-04-20      | 3                 | 33, 60, 44         |
+
+  @sql
+  Scenario Outline: The sample data catches a query that orders matches by match_id, not date                      # tests\features\sql\ipl-streaks.feature:39
+    ✔ Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data                              # tests\steps\sql.steps.ts:16
+
+          Changed "ORDER BY m.match_date, m.match_id" to "ORDER BY m.match_id"
+          
+          Correct query:
+          player_name | streak_start_date
+          Aarav Menon | 2024-03-22
+          Neel Chatterjee | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+          
+          Changed query:
+          player_name | streak_start_date
+          Aarav Menon | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+
+    ✔ When I run the "ipl_streaks" query with "ORDER BY m.match_date, m.match_id" changed to "ORDER BY m.match_id" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query misses the row starting "Neel Chatterjee, 2024-03-22"                                 # tests\steps\sql.steps.ts:58
+
+  @sql
+  Scenario Outline: The sample data catches a query that forgets the season filter                        # tests\features\sql\ipl-streaks.feature:40
+    ✔ Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data                     # tests\steps\sql.steps.ts:16
+
+          Changed "WHERE m.season = 2024" to "WHERE m.season >= 2023"
+          
+          Correct query:
+          player_name | streak_start_date
+          Aarav Menon | 2024-03-22
+          Neel Chatterjee | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+          
+          Changed query:
+          player_name | streak_start_date
+          Aarav Menon | 2023-05-14
+          Arjun Pillai | 2023-05-14
+          Vihaan Rao | 2023-05-26
+          Neel Chatterjee | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+
+    ✔ When I run the "ipl_streaks" query with "WHERE m.season = 2024" changed to "WHERE m.season >= 2023" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query adds the row starting "Arjun Pillai, 2023-05-14"                             # tests\steps\sql.steps.ts:58
+
+  @sql
+  Scenario Outline: The sample data catches a query that skips matches where the player did not bat                             # tests\features\sql\ipl-streaks.feature:41
+    ✔ Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data                                           # tests\steps\sql.steps.ts:16
+
+          Changed "WHERE m.season = 2024" to "WHERE m.season = 2024 AND b.runs IS NOT NULL"
+          
+          Correct query:
+          player_name | streak_start_date
+          Aarav Menon | 2024-03-22
+          Neel Chatterjee | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+          
+          Changed query:
+          player_name | streak_start_date
+          Aarav Menon | 2024-03-22
+          Neel Chatterjee | 2024-03-22
+          Vihaan Rao | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+
+    ✔ When I run the "ipl_streaks" query with "WHERE m.season = 2024" changed to "WHERE m.season = 2024 AND b.runs IS NOT NULL" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query adds the row starting "Vihaan Rao, 2024-03-22"                                                     # tests\steps\sql.steps.ts:58
+
+  @sql
+  Scenario Outline: The sample data catches a query that does not count a score of exactly 30 # tests\features\sql\ipl-streaks.feature:42
+    ✔ Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data         # tests\steps\sql.steps.ts:16
+
+          Changed "WHERE runs >= 30" to "WHERE runs > 30"
+          
+          Correct query:
+          player_name | streak_start_date
+          Aarav Menon | 2024-03-22
+          Neel Chatterjee | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+          
+          Changed query:
+          player_name | streak_start_date
+          Neel Chatterjee | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+
+    ✔ When I run the "ipl_streaks" query with "WHERE runs >= 30" changed to "WHERE runs > 30" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query misses the row starting "Aarav Menon, 2024-03-22"                # tests\steps\sql.steps.ts:58
+
+  @sql
+  Scenario Outline: The sample data catches a query that needs more than three matches                # tests\features\sql\ipl-streaks.feature:43
+    ✔ Given a fresh PostgreSQL database with the "ipl_streaks" tables and sample data                 # tests\steps\sql.steps.ts:16
+
+          Changed "HAVING COUNT(*) >= 3" to "HAVING COUNT(*) > 3"
+          
+          Correct query:
+          player_name | streak_start_date
+          Aarav Menon | 2024-03-22
+          Neel Chatterjee | 2024-03-22
+          Ishaan Bhatt | 2024-03-24
+          Dev Malhotra | 2024-03-26
+          Kian Thomas | 2024-04-02
+          Ishaan Bhatt | 2024-04-10
+          
+          Changed query:
+          player_name | streak_start_date
+          Dev Malhotra | 2024-03-26
+
+    ✔ When I run the "ipl_streaks" query with "HAVING COUNT(*) >= 3" changed to "HAVING COUNT(*) > 3" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query misses the row starting "Ishaan Bhatt, 2024-03-24"                       # tests\steps\sql.steps.ts:58
+
+Feature: SQL scenario 1 - round-trip transfers
+
+  @sql
+  Scenario: The query finds exactly the round trips in the sample data                                                                                  # tests\features\sql\round-trip-transfers.feature:10
+    ✔ Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data                                                          # tests\steps\sql.steps.ts:16
+
+          PostgreSQL 18.6 (PGlite 0.5.12)
+          
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+
+    ✔ When I run the "round_trip_transfers" query                                                                                                       # tests\steps\sql.steps.ts:23
+    ✔ Then the result has the columns "original_txn_id, return_txn_id, account_a, account_b, amount_sent, amount_returned, pct_difference, hours_apart" # tests\steps\sql.steps.ts:48
+    ✔ And the result is:                                                                                                                                # tests\steps\sql.steps.ts:52
+        | original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart |
+        | 1               | 2             | ACC-1001  | ACC-2001  | 10000.00    | 9500.00         | -5.00          | 8.50        |
+        | 7               | 8             | ACC-1004  | ACC-2004  | 1000.00     | 1100.00         | 10.00          | 24.00       |
+        | 13              | 14            | ACC-2007  | ACC-1007  | 2000.00     | 2000.00         | 0.00           | 3.00        |
+        | 15              | 16            | ACC-1008  | ACC-2008  | 50000.00    | 45500.00        | -9.00          | 10.00       |
+        | 15              | 17            | ACC-1008  | ACC-2008  | 50000.00    | 54000.00        | 8.00           | 23.00       |
+        | 22              | 23            | ACC-1011  | ACC-2011  | 1500.00     | 1500.00         | 0.00           | 0.00        |
+
+  @sql
+  Scenario Outline: The sample data catches a query that treats exactly 24 hours as too late                                                                       # tests\features\sql\round-trip-transfers.feature:28
+    ✔ Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data                                                                     # tests\steps\sql.steps.ts:16
+
+          Changed "r.txn_time <= o.txn_time + INTERVAL '24 hours'" to "r.txn_time < o.txn_time + INTERVAL '24 hours'"
+          
+          Correct query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+          
+          Changed query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+
+    ✔ When I run the "round_trip_transfers" query with "r.txn_time <= o.txn_time + INTERVAL '24 hours'" changed to "r.txn_time < o.txn_time + INTERVAL '24 hours'" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query misses the row starting "7, 8"                                                                                                        # tests\steps\sql.steps.ts:58
+
+  @sql
+  Scenario Outline: The sample data catches a query that treats exactly 10% as too much                                                                      # tests\features\sql\round-trip-transfers.feature:29
+    ✔ Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data                                                               # tests\steps\sql.steps.ts:16
+
+          Changed "ABS(r.amount - o.amount) <= 0.10 * o.amount" to "ABS(r.amount - o.amount) < 0.10 * o.amount"
+          
+          Correct query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+          
+          Changed query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+
+    ✔ When I run the "round_trip_transfers" query with "ABS(r.amount - o.amount) <= 0.10 * o.amount" changed to "ABS(r.amount - o.amount) < 0.10 * o.amount" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query misses the row starting "7, 8"                                                                                                  # tests\steps\sql.steps.ts:58
+
+  @sql
+  Scenario Outline: The sample data catches a query that measures 10% against the returned amount     # tests\features\sql\round-trip-transfers.feature:30
+    ✔ Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data        # tests\steps\sql.steps.ts:16
+
+          Changed "0.10 * o.amount" to "0.10 * r.amount"
+          
+          Correct query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+          
+          Changed query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+          26 | 27 | ACC-1012 | ACC-2012 | 1000.00 | 1105.00 | 10.50 | 2.00
+
+    ✔ When I run the "round_trip_transfers" query with "0.10 * o.amount" changed to "0.10 * r.amount" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query adds the row starting "26, 27"                                           # tests\steps\sql.steps.ts:58
+
+  @sql
+  Scenario Outline: The sample data catches a query that lets the return come before the payment                                           # tests\features\sql\round-trip-transfers.feature:31
+    ✔ Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data                                             # tests\steps\sql.steps.ts:16
+
+          Changed "(r.txn_time, r.txn_id) > (o.txn_time, o.txn_id)" to "r.txn_id <> o.txn_id"
+          
+          Correct query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+          
+          Changed query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          2 | 1 | ACC-2001 | ACC-1001 | 9500.00 | 10000.00 | 5.26 | -8.50
+          6 | 5 | ACC-2003 | ACC-1003 | 19800.00 | 20000.00 | 1.01 | -25.00
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          8 | 7 | ACC-2004 | ACC-1004 | 1100.00 | 1000.00 | -9.09 | -24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          14 | 13 | ACC-1007 | ACC-2007 | 2000.00 | 2000.00 | 0.00 | -3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          16 | 15 | ACC-2008 | ACC-1008 | 45500.00 | 50000.00 | 9.89 | -10.00
+          17 | 15 | ACC-2008 | ACC-1008 | 54000.00 | 50000.00 | -7.41 | -23.00
+          21 | 20 | ACC-2010 | ACC-1010 | 8000.00 | 8000.00 | 0.00 | -24.00
+          23 | 22 | ACC-2011 | ACC-1011 | 1500.00 | 1500.00 | 0.00 | 0.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+          25 | 1 | ACC-2001 | ACC-1001 | 9900.00 | 10000.00 | 1.01 | -462.00
+          27 | 26 | ACC-2012 | ACC-1012 | 1105.00 | 1000.00 | -9.50 | -2.00
+
+    ✔ When I run the "round_trip_transfers" query with "(r.txn_time, r.txn_id) > (o.txn_time, o.txn_id)" changed to "r.txn_id <> o.txn_id" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query adds the row starting "2, 1"                                                                                  # tests\steps\sql.steps.ts:58
+
+  @sql
+  Scenario Outline: The sample data catches a query that drops transfers that share a timestamp                                               # tests\features\sql\round-trip-transfers.feature:32
+    ✔ Given a fresh PostgreSQL database with the "round_trip_transfers" tables and sample data                                                # tests\steps\sql.steps.ts:16
+
+          Changed "(r.txn_time, r.txn_id) > (o.txn_time, o.txn_id)" to "r.txn_time > o.txn_time"
+          
+          Correct query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+          22 | 23 | ACC-1011 | ACC-2011 | 1500.00 | 1500.00 | 0.00 | 0.00
+          
+          Changed query:
+          original_txn_id | return_txn_id | account_a | account_b | amount_sent | amount_returned | pct_difference | hours_apart
+          1 | 2 | ACC-1001 | ACC-2001 | 10000.00 | 9500.00 | -5.00 | 8.50
+          7 | 8 | ACC-1004 | ACC-2004 | 1000.00 | 1100.00 | 10.00 | 24.00
+          13 | 14 | ACC-2007 | ACC-1007 | 2000.00 | 2000.00 | 0.00 | 3.00
+          15 | 16 | ACC-1008 | ACC-2008 | 50000.00 | 45500.00 | -9.00 | 10.00
+          15 | 17 | ACC-1008 | ACC-2008 | 50000.00 | 54000.00 | 8.00 | 23.00
+
+    ✔ When I run the "round_trip_transfers" query with "(r.txn_time, r.txn_id) > (o.txn_time, o.txn_id)" changed to "r.txn_time > o.txn_time" # tests\steps\sql.steps.ts:37
+    ✔ Then the changed query misses the row starting "22, 23"                                                                                 # tests\steps\sql.steps.ts:58
+
+1 hook (1 passed)
+13 scenarios (13 passed)
+80 steps (80 passed)
+0m 16.176s (0m 16.107s executing your code)

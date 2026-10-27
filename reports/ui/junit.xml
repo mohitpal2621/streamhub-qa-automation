@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<testsuite name="Cucumber" time="45.469" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-27T18:51:48.573Z">
+  <testcase classname="Personal loan payment schedule bar chart" name="10L personal loan at 12% for 5 years, starting June 2027" time="10.024">
+    <system-out><![CDATA[Given I open the EMI calculator.............................................passed
+And I open the "Personal Loan" tab..........................................passed
+When I drag the sliders to a loan amount of 10L, an interest rate of 12% and a tenure of 5 years..passed
+And I change the schedule start month to "Jun 2027".........................passed
+Then the EMI, total interest and total payment match my own calculation.....passed
+And the payment schedule bar chart is visible...............................passed
+And the bar chart has 6 bars, one for each year from 2027 to 2032...........passed
+And the tooltip of the 2028 bar shows the principal, interest and total payment from my own schedule..passed]]></system-out>
+  </testcase>
+  <testcase classname="Home loan EMI and the payment break-up pie chart" name="&lt;scenario>: &lt;amount> at &lt;rate>% for &lt;years> years - #1.1: Scenario A: 25L at 10% for 10 years" time="29.771">
+    <system-out><![CDATA[Given I open the EMI calculator.............................................passed
+And I open the "Home Loan" tab..............................................passed
+When I enter a loan amount of 25L, an interest rate of 10% and a tenure of 10 years..passed
+Then the EMI, total interest and total payment match my own calculation.....passed
+And the payment break-up pie chart is visible...............................passed
+And both sections of the pie chart show values greater than zero............passed
+And the pie chart splits the total payment into the principal and the interest I calculated..passed]]></system-out>
+  </testcase>
+  <testcase classname="Home loan EMI and the payment break-up pie chart" name="&lt;scenario>: &lt;amount> at &lt;rate>% for &lt;years> years - #1.2: Scenario B: 50L at 7.5% for 15 years" time="5.568">
+    <system-out><![CDATA[Given I open the EMI calculator.............................................passed
+And I open the "Home Loan" tab..............................................passed
+When I enter a loan amount of 50L, an interest rate of 7.5% and a tenure of 15 years..passed
+Then the EMI, total interest and total payment match my own calculation.....passed
+And the payment break-up pie chart is visible...............................passed
+And both sections of the pie chart show values greater than zero............passed
+And the pie chart splits the total payment into the principal and the interest I calculated..passed]]></system-out>
+  </testcase>
+</testsuite>

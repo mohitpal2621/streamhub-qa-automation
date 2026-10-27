@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<testsuite name="Cucumber" time="104.097" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-27T18:39:02.799Z">
+  <testcase classname="Self-healing demo with deliberately broken locators" name="Work out a personal loan EMI through four broken locators" time="85.834">
+    <system-out><![CDATA[Given I open the EMI calculator.............................................passed
+When I open the Personal Loan tab through its brittle locator...............passed
+And I type 10L into the loan amount box through its brittle locator.........passed
+And I type 12% into the interest rate box through its brittle locator.......passed
+And I set the tenure to 5 years.............................................passed
+Then the EMI read through its brittle locator matches my own calculation....passed]]></system-out>
+  </testcase>
+  <testcase classname="Self-healing demo with deliberately broken locators" name="A locator for a button the page does not have is not healed" time="18.153">
+    <system-out><![CDATA[Given I open the EMI calculator.............................................passed
+Then clicking the "Calculate EMI" button through its brittle locator fails..passed
+And no replacement was accepted for the "calculateButton" locator...........passed]]></system-out>
+  </testcase>
+</testsuite>

@@ -1,0 +1,922 @@
+<?xml version="1.0"?>
+<testsuite name="Cucumber" time="1.502" tests="120" skipped="0" failures="0" errors="0" timestamp="2026-10-27T18:51:25.604Z">
+  <testcase classname="Channels endpoint" name="Default listing is sorted by name" time="0.081">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels"..................................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the pagination shows page 1 of 1 with 6 items in total..................passed
+And the items are sorted by "name" in ascending order.......................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Filter channels: &lt;filter> - #1.1: Filter channels: by country" time="0.022">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?country=IN".......................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "ch_003, ch_006".......................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Filter channels: &lt;filter> - #1.2: Filter channels: unverified only" time="0.012">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?verified=false"...................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "ch_005, ch_004".......................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Filter channels: &lt;filter> - #1.3: Filter channels: at least 1M subscribers" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?minSubscribers=1000000"...........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "ch_003, ch_001".......................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Filter channels: &lt;filter> - #1.4: Filter channels: search by name" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?q=beats"..........................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "ch_002"...............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Filter channels: &lt;filter> - #1.5: Filter channels: search by handle" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?q=@wild"..........................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "ch_006"...............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Filter channels: &lt;filter> - #1.6: Filter channels: country with no channels" time="0.013">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?country=FR".......................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "".....................................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Filter channels: &lt;filter> - #1.7: Filter channels: combined, sorted" time="0.012">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?country=GB&verified=true&sort=-subscribers".......passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "ch_001, ch_002".......................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Sort channels by &lt;sort> - #1.1: Sort channels by name" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?sort=name"........................................passed
+Then the response status is 200.............................................passed
+And the items are sorted by "name" in ascending order.......................passed
+And the item ids are "ch_003, ch_005, ch_002, ch_001, ch_004, ch_006".......passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Sort channels by &lt;sort> - #1.2: Sort channels by -name" time="0.023">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?sort=-name".......................................passed
+Then the response status is 200.............................................passed
+And the items are sorted by "name" in descending order......................passed
+And the item ids are "ch_006, ch_004, ch_001, ch_002, ch_005, ch_003".......passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Sort channels by &lt;sort> - #1.3: Sort channels by subscribers" time="0.013">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?sort=subscribers".................................passed
+Then the response status is 200.............................................passed
+And the items are sorted by "subscribers" in ascending order................passed
+And the item ids are "ch_005, ch_004, ch_006, ch_002, ch_001, ch_003".......passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Sort channels by &lt;sort> - #1.4: Sort channels by -subscribers" time="0.022">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?sort=-subscribers"................................passed
+Then the response status is 200.............................................passed
+And the items are sorted by "subscribers" in descending order...............passed
+And the item ids are "ch_003, ch_001, ch_002, ch_006, ch_004, ch_005".......passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Sort channels by &lt;sort> - #1.5: Sort channels by createdAt" time="0.012">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?sort=createdAt"...................................passed
+Then the response status is 200.............................................passed
+And the items are sorted by "createdAt" in ascending order..................passed
+And the item ids are "ch_003, ch_001, ch_006, ch_002, ch_004, ch_005".......passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Sort channels by &lt;sort> - #1.6: Sort channels by -createdAt" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?sort=-createdAt"..................................passed
+Then the response status is 200.............................................passed
+And the items are sorted by "createdAt" in descending order.................passed
+And the item ids are "ch_005, ch_004, ch_002, ch_006, ch_001, ch_003".......passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="The second page holds the remaining channels" time="0.018">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?limit=4&page=2"...................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 2 items...............................................passed
+And the pagination shows page 2 of 2 with 6 items in total..................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Each channel's video count agrees with the videos endpoint" time="0.031">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels"..................................................passed
+Then each channel's "videoCount" equals the number of videos the videos endpoint returns for it..passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Reject &lt;case> - #1.1: Reject a lower-case country code" time="0.013">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?country=gb".......................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "country" parameter.............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Reject &lt;case> - #1.2: Reject a three-letter country code" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?country=GBR"......................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "country" parameter.............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Reject &lt;case> - #1.3: Reject a verified flag of &quot;1&quot;" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?verified=1".......................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "verified" parameter............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Reject &lt;case> - #1.4: Reject negative subscribers" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?minSubscribers=-1"................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "minSubscribers" parameter......................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Reject &lt;case> - #1.5: Reject a sort field videos have" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?sort=views".......................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "sort" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Reject &lt;case> - #1.6: Reject a limit of 500" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?limit=500"........................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "limit" parameter...............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Channels endpoint" name="Reject &lt;case> - #1.7: Reject a filter that videos have" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?category=music"...................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "UNKNOWN_PARAMETER"...................................passed
+And the error points at the "category" parameter............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="Health check" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/health"....................................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the response field "status" is "ok".....................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="Responses are JSON: &lt;path> - #1.1: Responses are JSON: /videos" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos"....................................................passed
+Then the response header "content-type" contains "application/json".........passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="Responses are JSON: &lt;path> - #1.2: Responses are JSON: /videos/vid_404" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos/vid_404"............................................passed
+Then the response header "content-type" contains "application/json".........passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="Responses are JSON: &lt;path> - #1.3: Responses are JSON: /channels?limit=0" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/channels?limit=0"..........................................passed
+Then the response header "content-type" contains "application/json".........passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="Responses are JSON: &lt;path> - #1.4: Responses are JSON: /stats/views?groupBy=month" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=month".................................passed
+Then the response header "content-type" contains "application/json".........passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="&lt;method> is not allowed on &lt;path> - #1.1: POST is not allowed on /videos" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I send a POST request to "/videos".....................................passed
+Then the response status is 405.............................................passed
+And the response matches the API contract...................................passed
+And the response header "allow" contains "GET"..............................passed
+And the error code is "METHOD_NOT_ALLOWED"..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="&lt;method> is not allowed on &lt;path> - #1.2: PUT is not allowed on /videos/vid_001" time="0.017">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I send a PUT request to "/videos/vid_001"..............................passed
+Then the response status is 405.............................................passed
+And the response matches the API contract...................................passed
+And the response header "allow" contains "GET"..............................passed
+And the error code is "METHOD_NOT_ALLOWED"..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="&lt;method> is not allowed on &lt;path> - #1.3: DELETE is not allowed on /videos/vid_001" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I send a DELETE request to "/videos/vid_001"...........................passed
+Then the response status is 405.............................................passed
+And the response matches the API contract...................................passed
+And the response header "allow" contains "GET"..............................passed
+And the error code is "METHOD_NOT_ALLOWED"..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="&lt;method> is not allowed on &lt;path> - #1.4: PATCH is not allowed on /channels" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I send a PATCH request to "/channels"..................................passed
+Then the response status is 405.............................................passed
+And the response matches the API contract...................................passed
+And the response header "allow" contains "GET"..............................passed
+And the error code is "METHOD_NOT_ALLOWED"..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="&lt;method> is not allowed on &lt;path> - #1.5: POST is not allowed on /stats/views" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I send a POST request to "/stats/views"................................passed
+Then the response status is 405.............................................passed
+And the response matches the API contract...................................passed
+And the response header "allow" contains "GET"..............................passed
+And the error code is "METHOD_NOT_ALLOWED"..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="HEAD is answered like GET, without a body" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I send a HEAD request to "/videos".....................................passed
+Then the response status is 200.............................................passed
+And the response body is empty..............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="An unknown route returns the standard error body" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/playlists".................................................passed
+Then the response status is 404.............................................passed
+And the response body matches the "Error" schema............................passed
+And the error code is "NOT_FOUND"...........................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Behaviour shared by every endpoint" name="A malformed percent-encoding is a client error, not a crash" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos/%E0%A4%A"...........................................passed
+Then the response status is 400.............................................passed
+And the response body matches the "Error" schema............................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="groupBy is required" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views"...............................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "MISSING_PARAMETER"...................................passed
+And the error points at the "groupBy" parameter.............................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Views grouped by &lt;groupBy> - #1.1: Views grouped by category" time="0.026">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=category"..............................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 8 groups covering 30 videos and 19,619,400 views..............passed
+And the groups are ordered by views, highest first..........................passed
+And the group totals add up to the overall totals...........................passed
+And every group's totals match what the videos endpoint returns for it......passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Views grouped by &lt;groupBy> - #1.2: Views grouped by channel" time="0.025">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=channel"...............................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 6 groups covering 30 videos and 19,619,400 views..............passed
+And the groups are ordered by views, highest first..........................passed
+And the group totals add up to the overall totals...........................passed
+And every group's totals match what the videos endpoint returns for it......passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Views grouped by &lt;groupBy> - #1.3: Views grouped by month" time="0.029">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=month".................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 13 groups covering 30 videos and 19,619,400 views.............passed
+And the groups are ordered by views, highest first..........................passed
+And the group totals add up to the overall totals...........................passed
+And every group's totals match what the videos endpoint returns for it......passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Top three categories" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=category&top=3"........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the groups are:.........................................................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Views per channel for March 2026" time="0.016">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=channel&from=2026-03-01&to=2026-03-31"..passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 5 groups covering 5 videos and 1,631,700 views................passed
+And the groups are:.........................................................passed
+And every group's totals match what the videos endpoint returns for it......passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="A date range with no videos gives empty groups" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=month&from=2027-01-01".................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 0 groups covering 0 videos and 0 views........................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Reject &lt;case> - #1.1: Reject an unsupported groupBy" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=tag"...................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "groupBy" parameter.............................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Reject &lt;case> - #1.2: Reject an empty groupBy" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy="......................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "groupBy" parameter.............................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Reject &lt;case> - #1.3: Reject top of zero" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=category&top=0"........................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "top" parameter.................................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Reject &lt;case> - #1.4: Reject top above 20" time="0.014">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=category&top=21".......................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "top" parameter.................................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Reject &lt;case> - #1.5: Reject from later than to" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=month&from=2026-06-01&to=2026-01-01"...passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "to" parameter..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="View statistics endpoint" name="Reject &lt;case> - #1.6: Reject a parameter it lacks" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/stats/views?groupBy=month&sort=views"......................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "UNKNOWN_PARAMETER"...................................passed
+And the error points at the "sort" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Out-of-range numbers - #1.1: Reject a limit of zero" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?limit=0"............................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "limit" parameter...............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Out-of-range numbers - #1.2: Reject a limit above 50" time="0.012">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?limit=51"...........................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "limit" parameter...............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Out-of-range numbers - #1.3: Reject a page of zero" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?page=0".............................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "page" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Out-of-range numbers - #1.4: Reject a negative page" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?page=-1"............................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "page" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Out-of-range numbers - #1.5: Reject a page above 10000" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?page=10001".........................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "page" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Out-of-range numbers - #1.6: Reject a negative duration" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?minDuration=-5".....................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "minDuration" parameter.........................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Out-of-range numbers - #1.7: Reject a number too big to use" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?limit=99999999999999999999".........................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "limit" parameter...............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Unsupported types and formats - #2.1: Reject a word for a limit" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?limit=ten"..........................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "limit" parameter...............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Unsupported types and formats - #2.2: Reject a decimal page" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?page=1.5"...........................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "page" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Unsupported types and formats - #2.3: Reject an empty limit" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?limit=".............................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "limit" parameter...............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Unsupported types and formats - #2.4: Reject a live flag of &quot;yes&quot;" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?live=yes"...........................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "live" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Unsupported types and formats - #2.5: Reject a live flag of &quot;1&quot;" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?live=1".............................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "live" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Unsupported types and formats - #2.6: Reject an impossible date" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?from=2026-02-30"....................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "from" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Unsupported types and formats - #2.7: Reject a date in DD-MM-YYYY order" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?to=01-03-2026"......................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "to" parameter..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Unsupported types and formats - #2.8: Reject a malformed channel id" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?channelId=CH-1".....................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "channelId" parameter...........................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Values outside the allowed set - #3.1: Reject an unsupported sort field" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=rating"........................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "sort" parameter................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Values outside the allowed set - #3.2: Reject an unknown category" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?category=cooking"...................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "category" parameter............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Values outside the allowed set - #3.3: Reject one unknown category in a list" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?category=music,cooking".............................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "category" parameter............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Values outside the allowed set - #3.4: Reject a category in the wrong case" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?category=Music".....................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "category" parameter............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Values outside the allowed set - #3.5: Reject a one-letter search" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?q=a"................................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "q" parameter...................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Values outside the allowed set - #3.6: Reject a search of only spaces" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?q=%20%20%20"........................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "q" parameter...................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Ranges that contradict themselves - #4.1: Reject minDuration above maxDuration" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?minDuration=600&maxDuration=300"....................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "maxDuration" parameter.........................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Ranges that contradict themselves - #4.2: Reject from later than to" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?from=2026-05-01&to=2026-04-01"......................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "to" parameter..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Parameters the endpoint does not take - #5.1: Reject a misspelt parameter" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sortBy=views".......................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "UNKNOWN_PARAMETER"...................................passed
+And the error points at the "sortBy" parameter..............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Reject &lt;case> - Parameters the endpoint does not take - #5.2: Reject a parameter given twice" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?limit=5&limit=10"...................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed
+And the error points at the "limit" parameter...............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="A search term longer than 100 characters is rejected" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos" with "q" set to 101 "a" characters.................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error points at the "q" parameter...................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="A search term of exactly 100 characters is accepted" time="0.012">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos" with "q" set to 100 "a" characters.................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 0 items...............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="Every problem in a request is reported in one response" time="0.012">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?limit=0&page=zero&colour=red".......................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error message is "3 problems with the request: colour, page, limit"..passed
+And the error details are:..................................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint rejects bad query parameters" name="The error message says what a valid value looks like" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?limit=500"..........................................passed
+Then the response status is 400.............................................passed
+And the error message is "limit must be an integer between 1 and 50"........passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Default listing returns the newest videos first, ten per page" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos"....................................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 10 items..............................................passed
+And the pagination shows page 1 of 3 with 30 items in total.................passed
+And the items are sorted by "publishedAt" in descending order...............passed
+And the first item is "vid_020".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by category: &lt;category> - #1.1: Filter by category: music" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?category=music&limit=50"............................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 5 matching items..............................................passed
+And every item has "category" set to one of "music".........................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by category: &lt;category> - #1.2: Filter by category: technology" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?category=technology&limit=50".......................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 3 matching items..............................................passed
+And every item has "category" set to one of "technology"....................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by category: &lt;category> - #1.3: Filter by category: entertainment" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?category=entertainment&limit=50"....................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 1 matching items..............................................passed
+And every item has "category" set to one of "entertainment".................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by category: &lt;category> - #1.4: Filter by category: music,sports" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?category=music,sports&limit=50".....................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 10 matching items.............................................passed
+And every item has "category" set to one of "music,sports"..................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by live flag: &lt;live> - #1.1: Filter by live flag: true" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?live=true&limit=50".................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 6 matching items..............................................passed
+And every item has "live" set to one of "true"..............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by live flag: &lt;live> - #1.2: Filter by live flag: false" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?live=false&limit=50"................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 24 matching items.............................................passed
+And every item has "live" set to one of "false".............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by channel" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?channelId=ch_003&limit=50"..........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 6 matching items..............................................passed
+And every item has "channelId" set to one of "ch_003".......................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by duration: &lt;query> - #1.1: Filter by duration: minDuration=3600" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?minDuration=3600&limit=50"..........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 6 matching items..............................................passed
+And every item has "durationSeconds" between 3600 and 99999.................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by duration: &lt;query> - #1.2: Filter by duration: maxDuration=600" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?maxDuration=600&limit=50"...........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 4 matching items..............................................passed
+And every item has "durationSeconds" between 0 and 600......................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by duration: &lt;query> - #1.3: Filter by duration: minDuration=900&amp;maxDuration=1500" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?minDuration=900&maxDuration=1500&limit=50"..........passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 10 matching items.............................................passed
+And every item has "durationSeconds" between 900 and 1500...................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by duration: &lt;query> - #1.4: Filter by duration: minDuration=905&amp;maxDuration=905" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?minDuration=905&maxDuration=905&limit=50"...........passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And there are 2 matching items..............................................passed
+And every item has "durationSeconds" between 905 and 905....................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by publish date: &lt;query> - #1.1: Filter by publish date: from=2026-03-01&amp;to=2026-03-31" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?from=2026-03-01&to=2026-03-31&sort=publishedAt&limit=50"..passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "vid_003, vid_012, vid_019, vid_028, vid_007"..........passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by publish date: &lt;query> - #1.2: Filter by publish date: from=2026-03-05&amp;to=2026-03-05" time="0.013">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?from=2026-03-05&to=2026-03-05&sort=publishedAt&limit=50"..passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "vid_003"..............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by publish date: &lt;query> - #1.3: Filter by publish date: from=2026-09-01" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?from=2026-09-01&sort=publishedAt&limit=50"..........passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "vid_017, vid_025, vid_020"............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filter by publish date: &lt;query> - #1.4: Filter by publish date: to=2025-12-31" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?to=2025-12-31&sort=publishedAt&limit=50"............passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "vid_016, vid_018, vid_006, vid_009, vid_026, vid_023"..passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Search titles and tags for &quot;&lt;term>&quot; - #1.1: Search titles and tags for &quot;highlights&quot;" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?q=highlights&sort=title"............................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "vid_024, vid_001".....................................passed
+And every item mentions "highlights" in its title or tags...................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Search titles and tags for &quot;&lt;term>&quot; - #1.2: Search titles and tags for &quot;TESTING&quot;" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?q=TESTING&sort=title"...............................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "vid_015, vid_011".....................................passed
+And every item mentions "testing" in its title or tags......................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Search titles and tags for &quot;&lt;term>&quot; - #1.3: Search titles and tags for &quot;%20%20sql%20%20&quot;" time="0.019">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?q=%20%20sql%20%20&sort=title".......................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "vid_013"..............................................passed
+And every item mentions "sql" in its title or tags..........................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Search titles and tags for &quot;&lt;term>&quot; - #1.4: Search titles and tags for &quot;top-10&quot;" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?q=top-10&sort=title"................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the item ids are "vid_023, vid_004".....................................passed
+And every item mentions "top-10" in its title or tags.......................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="A search with no matches returns an empty page, not an error" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?q=cooking"..........................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 0 items...............................................passed
+And the pagination shows page 1 of 0 with 0 items in total..................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Sort by &lt;sort> - #1.1: Sort by publishedAt" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=publishedAt&limit=50"..........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the items are sorted by "publishedAt" in ascending order................passed
+And the first item is "vid_016".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Sort by &lt;sort> - #1.2: Sort by -publishedAt" time="0.012">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=-publishedAt&limit=50".........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the items are sorted by "publishedAt" in descending order...............passed
+And the first item is "vid_020".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Sort by &lt;sort> - #1.3: Sort by views" time="0.027">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=views&limit=50"................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the items are sorted by "views" in ascending order......................passed
+And the first item is "vid_015".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Sort by &lt;sort> - #1.4: Sort by -views" time="0.033">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=-views&limit=50"...............................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the items are sorted by "views" in descending order.....................passed
+And the first item is "vid_018".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Sort by &lt;sort> - #1.5: Sort by durationSeconds" time="0.021">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=durationSeconds&limit=50"......................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the items are sorted by "durationSeconds" in ascending order............passed
+And the first item is "vid_006".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Sort by &lt;sort> - #1.6: Sort by -durationSeconds" time="0.013">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=-durationSeconds&limit=50".....................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the items are sorted by "durationSeconds" in descending order...........passed
+And the first item is "vid_018".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Sort by &lt;sort> - #1.7: Sort by title" time="0.028">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=title&limit=50"................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the items are sorted by "title" in ascending order......................passed
+And the first item is "vid_006".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Sort by &lt;sort> - #1.8: Sort by -title" time="0.013">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=-title&limit=50"...............................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the items are sorted by "title" in descending order.....................passed
+And the first item is "vid_020".............................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Page &lt;page> with &lt;limit> items per page - #1.1: Page 1 with 1 items per page" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=views&page=1&limit=1"..........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 1 items...............................................passed
+And the pagination shows page 1 of 30 with 30 items in total................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Page &lt;page> with &lt;limit> items per page - #1.2: Page 2 with 7 items per page" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=views&page=2&limit=7"..........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 7 items...............................................passed
+And the pagination shows page 2 of 5 with 30 items in total.................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Page &lt;page> with &lt;limit> items per page - #1.3: Page 5 with 7 items per page" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=views&page=5&limit=7"..........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 2 items...............................................passed
+And the pagination shows page 5 of 5 with 30 items in total.................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Page &lt;page> with &lt;limit> items per page - #1.4: Page 1 with 50 items per page" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=views&page=1&limit=50".........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 30 items..............................................passed
+And the pagination shows page 1 of 1 with 30 items in total.................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Page &lt;page> with &lt;limit> items per page - #1.5: Page 6 with 7 items per page" time="0.009">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=views&page=6&limit=7"..........................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 0 items...............................................passed
+And the pagination shows page 6 of 5 with 30 items in total.................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Page &lt;page> with &lt;limit> items per page - #1.6: Page 10000 with 50 items per page" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?sort=views&page=10000&limit=50".....................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the page contains 0 items...............................................passed
+And the pagination shows page 10000 of 1 with 30 items in total.............passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Paging through a sorted list returns every video exactly once" time="0.017">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I collect every page of "/videos?sort=title&limit=7"...................passed
+Then I have 30 different videos in title order..............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Filters, sorting and paging combine" time="0.011">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos?category=sports,gaming&live=false&minDuration=900&sort=-views&limit=3"..passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the pagination shows page 1 of 2 with 6 items in total..................passed
+And the item ids are "vid_024, vid_003, vid_005"............................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Get one video with its channel" time="0.012">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos/vid_011"............................................passed
+Then the response status is 200.............................................passed
+And the response matches the API contract...................................passed
+And the response field "title" is "Playwright vs Cypress in 2026"...........passed
+And the response field "channel.name" is "Byte Sized Tech"..................passed
+And the response field "channel.verified" is "true".........................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Looking up a video fails for &lt;case> - #1.1: Looking up a video fails for an id that does not exist" time="0.01">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos/vid_999"............................................passed
+Then the response status is 404.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "NOT_FOUND"...........................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Looking up a video fails for &lt;case> - #1.2: Looking up a video fails for an id in the wrong format" time="0.008">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos/12".................................................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Looking up a video fails for &lt;case> - #1.3: Looking up a video fails for an id with SQL in it" time="0.007">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos/vid_001'%20OR%20'1'='1".............................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "INVALID_PARAMETER"...................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Videos endpoint" name="Looking up a video fails for &lt;case> - #1.4: Looking up a video fails for a query parameter" time="0.006">
+    <system-out><![CDATA[Given the catalogue API is running..........................................passed
+When I request "/videos/vid_001?expand=channel".............................passed
+Then the response status is 400.............................................passed
+And the response matches the API contract...................................passed
+And the error code is "UNKNOWN_PARAMETER"...................................passed]]></system-out>
+  </testcase>
+</testsuite>
