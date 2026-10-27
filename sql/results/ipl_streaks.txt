@@ -1,0 +1,12 @@
+-- sql/ipl_streaks/query.sql
+-- PostgreSQL 18.6 (PGlite 0.5.12)
+
+ player_name     | streak_start_date
+-----------------+-------------------
+ Aarav Menon     | 2024-03-22
+ Neel Chatterjee | 2024-03-22
+ Ishaan Bhatt    | 2024-03-24
+ Dev Malhotra    | 2024-03-26
+ Kian Thomas     | 2024-04-02
+ Ishaan Bhatt    | 2024-04-10
+(6 rows)
