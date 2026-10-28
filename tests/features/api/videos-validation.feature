@@ -79,4 +79,5 @@ Feature: Videos endpoint rejects bad query parameters
   Scenario: The error message says what a valid value looks like
     When I request "/videos?limit=500"
     Then the response status is 400
+    And the response matches the API contract
     And the error message is "limit must be an integer between 1 and 50"

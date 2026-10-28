@@ -4,7 +4,7 @@ Results of the latest local run, written by `npm run report:summary`. Open the H
 
 | Suite | Command | Scenarios | Passed | Failed | Steps | Time | Run at (UTC) | Reports |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| B2 API tests | `npm run test:api` | 120 | 120 | 0 | 679 | 1s | 2026-10-27 18:51 | [html](api/cucumber-report.html) [xml](api/junit.xml) [txt](api/console.txt) |
+| B2 API tests | `npm run test:api` | 122 | 122 | 0 | 708 | 1s | 2026-10-28 02:08 | [html](api/cucumber-report.html) [xml](api/junit.xml) [txt](api/console.txt) |
 | B3 UI tests (emicalculator.net) | `npm run test:ui` | 3 | 3 | 0 | 22 | 45s | 2026-10-27 18:52 | [html](ui/cucumber-report.html) [xml](ui/junit.xml) [txt](ui/console.txt) |
 | B4 SQL tests | `npm run test:sql` | 13 | 13 | 0 | 41 | 16s | 2026-10-27 18:51 | [html](sql/cucumber-report.html) [xml](sql/junit.xml) [txt](sql/console.txt) |
 | Self-healing demo, healing off | `npm run test:healing:off` | 2 | 1 | 1 | 9 | 19s | 2026-10-27 18:52 | [html](self-healing/healing-off/cucumber-report.html) [xml](self-healing/healing-off/junit.xml) [txt](self-healing/healing-off/console.txt) |

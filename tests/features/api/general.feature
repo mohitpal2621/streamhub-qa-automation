@@ -12,14 +12,16 @@ Feature: Behaviour shared by every endpoint
 
   Scenario Outline: Responses are JSON: <path>
     When I request "<path>"
-    Then the response header "content-type" contains "application/json"
+    Then the response status is <status>
+    And the response header "content-type" contains "application/json"
+    And the response matches the API contract
 
     Examples:
-      | path                       |
-      | /videos                    |
-      | /videos/vid_404            |
-      | /channels?limit=0          |
-      | /stats/views?groupBy=month |
+      | path                       | status |
+      | /videos                    | 200    |
+      | /videos/vid_404            | 404    |
+      | /channels?limit=0          | 400    |
+      | /stats/views?groupBy=month | 200    |
 
   Scenario Outline: <method> is not allowed on <path>
     When I send a <method> request to "<path>"

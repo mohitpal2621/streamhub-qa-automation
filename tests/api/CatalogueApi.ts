@@ -1,4 +1,5 @@
 import type { APIRequestContext } from '@playwright/test';
+import { contractViolations } from './contract';
 
 export interface ApiCall {
   method: string;
@@ -58,13 +59,18 @@ export class CatalogueApi {
     return this.request.dispose();
   }
 
-  /** Follows the pagination of a list endpoint and returns the items from every page. */
+  /**
+   * Follows the pagination of a list endpoint and returns the items from every
+   * page. Each page must be a 200 that matches the API contract.
+   */
   async collectAll<T>(path: string): Promise<T[]> {
     const items: T[] = [];
     const separator = path.includes('?') ? '&' : '?';
     for (let page = 1; ; page++) {
       const call = await this.get(`${path}${separator}page=${page}`);
       if (call.status !== 200) throw new Error(`GET ${call.path} returned ${call.status}: ${JSON.stringify(call.body)}`);
+      const violations = contractViolations(call);
+      if (violations.length) throw new Error(`GET ${call.path} does not match the API contract: ${violations.join('; ')}`);
       const { data, pagination } = call.body as { data: T[]; pagination: { totalPages: number } };
       items.push(...data);
       if (page >= pagination.totalPages) return items;

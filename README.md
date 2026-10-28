@@ -18,7 +18,7 @@ The latest run of every suite is committed under [`reports/`](reports/README.md)
 
 | Suite | Scenarios | Result |
 | --- | --- | --- |
-| API (`npm run test:api`) | 120 | all passed |
+| API (`npm run test:api`) | 122 | all passed |
 | UI on emicalculator.net (`npm run test:ui`) | 3 | all passed |
 | SQL (`npm run test:sql`) | 13 | all passed |
 | Self-healing, healing off (`npm run test:healing:off`) | 2 | 1 failed, as intended: the broken locators as written |
@@ -51,7 +51,7 @@ That runs the API, SQL and UI suites in turn. Each suite also has its own script
 
 | Command | What it runs |
 | --- | --- |
-| `npm run test:api` | B2, 120 API scenarios (about 2 seconds) |
+| `npm run test:api` | B2, 122 API scenarios (about 2 seconds) |
 | `npm run test:ui` | B3, the emicalculator.net scenarios (about a minute, needs internet) |
 | `npm run test:sql` | B4, the SQL scenarios (under 30 seconds) |
 | `npm run test:healing:off` | self-healing demo with the broken locators as written |
@@ -164,8 +164,8 @@ curl "http://localhost:3000/api/v1/videos?limit=0&sortBy=views"
 The features are in [`tests/features/api/`](tests/features/api/). They cover:
 
 - every endpoint and parameter on the happy path: each filter alone, filters combined with sorting and paging, all eight sort orders, page boundaries, an empty search, the last page, a page past the end, and collecting every page of a sorted list to check nothing repeats or goes missing;
-- invalid and edge-case parameters: zero, negative and too-large numbers, numbers beyond `Number.MAX_SAFE_INTEGER`, words and decimals where integers belong, impossible dates such as 2026-02-30, wrong-case enum values, an empty value, a parameter given twice, unknown parameters, the missing required `groupBy`, and a 100 and 101 character search term;
-- status codes and response shape for valid and invalid requests alike: every response is validated against the schema that `api/openapi.yaml` documents for that path, method and status code, using Ajv. Responses that the spec does not describe, such as an unknown route, are checked against its `Error` schema.
+- invalid and edge-case parameters, with at least one bad value for every parameter of every endpoint: zero, negative and too-large numbers, numbers beyond `Number.MAX_SAFE_INTEGER`, words and decimals where integers belong, impossible dates such as 2026-02-30, wrong-case enum values, an empty value, a parameter given twice, unknown parameters, the missing required `groupBy`, and a 100 and 101 character search term;
+- status codes and response shape for valid and invalid requests alike: every scenario checks the status code and validates the body against the schema that `api/openapi.yaml` documents for that path, method and status code, using Ajv. Responses that the spec does not describe, such as an unknown route, are checked against its `Error` schema, and the HEAD request is checked for an empty body.
 
 Expected counts and ids in the features were worked out by hand from the JSON files. Two scenarios check one endpoint against another: each channel's `videoCount` against `/videos?channelId=...`, and every `/stats/views` group against the videos the videos endpoint returns for the same filter.
 
@@ -240,7 +240,7 @@ It read the brief, picked Section B and planned the layout first: feature files,
 What worked well:
 
 - Exploring an unfamiliar third-party page quickly, and turning a failed run into a fix in minutes.
-- Writing the bulk: the 120-scenario API matrix, the seed data with one case per edge, and the deliberately wrong SQL queries that prove each case matters.
+- Writing the bulk: the 122-scenario API matrix, the seed data with one case per edge, and the deliberately wrong SQL queries that prove each case matters.
 - The loop of running a suite, reading its output and screenshots, and fixing what they showed.
 
 What went wrong and had to be corrected:

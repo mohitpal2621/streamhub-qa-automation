@@ -67,55 +67,61 @@ Feature: Channels endpoint
     ✔ And the item ids are "ch_001, ch_002"                                 # tests\steps\api\catalogue.steps.ts:61
 
   @api
-  Scenario Outline: Sort channels by name                                   # tests\features\api\channels.feature:39
+  Scenario Outline: Sort channels by name                                   # tests\features\api\channels.feature:40
     ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?sort=name"                                  # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                             # tests\steps\api\http.steps.ts:53
     ✔ And the items are sorted by "name" in ascending order                 # tests\steps\api\catalogue.steps.ts:87
     ✔ And the item ids are "ch_003, ch_005, ch_002, ch_001, ch_004, ch_006" # tests\steps\api\catalogue.steps.ts:61
 
   @api
-  Scenario Outline: Sort channels by -name                                  # tests\features\api\channels.feature:40
+  Scenario Outline: Sort channels by -name                                  # tests\features\api\channels.feature:41
     ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?sort=-name"                                 # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                             # tests\steps\api\http.steps.ts:53
     ✔ And the items are sorted by "name" in descending order                # tests\steps\api\catalogue.steps.ts:87
     ✔ And the item ids are "ch_006, ch_004, ch_001, ch_002, ch_005, ch_003" # tests\steps\api\catalogue.steps.ts:61
 
   @api
-  Scenario Outline: Sort channels by subscribers                            # tests\features\api\channels.feature:41
+  Scenario Outline: Sort channels by subscribers                            # tests\features\api\channels.feature:42
     ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?sort=subscribers"                           # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                             # tests\steps\api\http.steps.ts:53
     ✔ And the items are sorted by "subscribers" in ascending order          # tests\steps\api\catalogue.steps.ts:87
     ✔ And the item ids are "ch_005, ch_004, ch_006, ch_002, ch_001, ch_003" # tests\steps\api\catalogue.steps.ts:61
 
   @api
-  Scenario Outline: Sort channels by -subscribers                           # tests\features\api\channels.feature:42
+  Scenario Outline: Sort channels by -subscribers                           # tests\features\api\channels.feature:43
     ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?sort=-subscribers"                          # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                             # tests\steps\api\http.steps.ts:53
     ✔ And the items are sorted by "subscribers" in descending order         # tests\steps\api\catalogue.steps.ts:87
     ✔ And the item ids are "ch_003, ch_001, ch_002, ch_006, ch_004, ch_005" # tests\steps\api\catalogue.steps.ts:61
 
   @api
-  Scenario Outline: Sort channels by createdAt                              # tests\features\api\channels.feature:43
+  Scenario Outline: Sort channels by createdAt                              # tests\features\api\channels.feature:44
     ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?sort=createdAt"                             # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                             # tests\steps\api\http.steps.ts:53
     ✔ And the items are sorted by "createdAt" in ascending order            # tests\steps\api\catalogue.steps.ts:87
     ✔ And the item ids are "ch_003, ch_001, ch_006, ch_002, ch_004, ch_005" # tests\steps\api\catalogue.steps.ts:61
 
   @api
-  Scenario Outline: Sort channels by -createdAt                             # tests\features\api\channels.feature:44
+  Scenario Outline: Sort channels by -createdAt                             # tests\features\api\channels.feature:45
     ✔ Given the catalogue API is running                                    # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?sort=-createdAt"                            # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 200                                       # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                             # tests\steps\api\http.steps.ts:53
     ✔ And the items are sorted by "createdAt" in descending order           # tests\steps\api\catalogue.steps.ts:87
     ✔ And the item ids are "ch_005, ch_004, ch_002, ch_006, ch_001, ch_003" # tests\steps\api\catalogue.steps.ts:61
 
   @api
-  Scenario: The second page holds the remaining channels         # tests\features\api\channels.feature:46
+  Scenario: The second page holds the remaining channels         # tests\features\api\channels.feature:47
     ✔ Given the catalogue API is running                         # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?limit=4&page=2"                  # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 200                            # tests\steps\api\http.steps.ts:49
@@ -124,13 +130,15 @@ Feature: Channels endpoint
     ✔ And the pagination shows page 2 of 2 with 6 items in total # tests\steps\api\catalogue.steps.ts:50
 
   @api
-  Scenario: Each channel's video count agrees with the videos endpoint                                # tests\features\api\channels.feature:53
-    ✔ Given the catalogue API is running                                                              # tests\steps\api\http.steps.ts:29
-    ✔ When I request "/channels"                                                                      # tests\steps\api\http.steps.ts:34
-    ✔ Then each channel's "videoCount" equals the number of videos the videos endpoint returns for it # tests\steps\api\catalogue.steps.ts:103
+  Scenario: Each channel's video count agrees with the videos endpoint                               # tests\features\api\channels.feature:54
+    ✔ Given the catalogue API is running                                                             # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels"                                                                     # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                                                # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                                                      # tests\steps\api\http.steps.ts:53
+    ✔ And each channel's "videoCount" equals the number of videos the videos endpoint returns for it # tests\steps\api\catalogue.steps.ts:103
 
   @api
-  Scenario Outline: Reject a lower-case country code  # tests\features\api\channels.feature:66
+  Scenario Outline: Reject a lower-case country code  # tests\features\api\channels.feature:69
     ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?country=gb"           # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400                 # tests\steps\api\http.steps.ts:49
@@ -139,7 +147,7 @@ Feature: Channels endpoint
     ✔ And the error points at the "country" parameter # tests\steps\api\http.steps.ts:79
 
   @api
-  Scenario Outline: Reject a three-letter country code # tests\features\api\channels.feature:67
+  Scenario Outline: Reject a three-letter country code # tests\features\api\channels.feature:70
     ✔ Given the catalogue API is running               # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?country=GBR"           # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400                  # tests\steps\api\http.steps.ts:49
@@ -148,7 +156,7 @@ Feature: Channels endpoint
     ✔ And the error points at the "country" parameter  # tests\steps\api\http.steps.ts:79
 
   @api
-  Scenario Outline: Reject a verified flag of "1"      # tests\features\api\channels.feature:68
+  Scenario Outline: Reject a verified flag of "1"      # tests\features\api\channels.feature:71
     ✔ Given the catalogue API is running               # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?verified=1"            # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400                  # tests\steps\api\http.steps.ts:49
@@ -157,7 +165,7 @@ Feature: Channels endpoint
     ✔ And the error points at the "verified" parameter # tests\steps\api\http.steps.ts:79
 
   @api
-  Scenario Outline: Reject negative subscribers              # tests\features\api\channels.feature:69
+  Scenario Outline: Reject negative subscribers              # tests\features\api\channels.feature:72
     ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?minSubscribers=-1"           # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400                        # tests\steps\api\http.steps.ts:49
@@ -166,7 +174,16 @@ Feature: Channels endpoint
     ✔ And the error points at the "minSubscribers" parameter # tests\steps\api\http.steps.ts:79
 
   @api
-  Scenario Outline: Reject a sort field videos have # tests\features\api\channels.feature:70
+  Scenario Outline: Reject a one-letter search  # tests\features\api\channels.feature:73
+    ✔ Given the catalogue API is running        # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?q=a"            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400           # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER" # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "q" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a sort field videos have # tests\features\api\channels.feature:74
     ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?sort=views"         # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
@@ -175,7 +192,16 @@ Feature: Channels endpoint
     ✔ And the error points at the "sort" parameter  # tests\steps\api\http.steps.ts:79
 
   @api
-  Scenario Outline: Reject a limit of 500           # tests\features\api\channels.feature:71
+  Scenario Outline: Reject page 0                  # tests\features\api\channels.feature:75
+    ✔ Given the catalogue API is running           # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?page=0"            # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400              # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract    # tests\steps\api\http.steps.ts:53
+    ✔ And the error code is "INVALID_PARAMETER"    # tests\steps\api\http.steps.ts:73
+    ✔ And the error points at the "page" parameter # tests\steps\api\http.steps.ts:79
+
+  @api
+  Scenario Outline: Reject a limit of 500           # tests\features\api\channels.feature:76
     ✔ Given the catalogue API is running            # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?limit=500"          # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400               # tests\steps\api\http.steps.ts:49
@@ -184,7 +210,7 @@ Feature: Channels endpoint
     ✔ And the error points at the "limit" parameter # tests\steps\api\http.steps.ts:79
 
   @api
-  Scenario Outline: Reject a filter that videos have   # tests\features\api\channels.feature:72
+  Scenario Outline: Reject a filter that videos have   # tests\features\api\channels.feature:77
     ✔ Given the catalogue API is running               # tests\steps\api\http.steps.ts:29
     ✔ When I request "/channels?category=music"        # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400                  # tests\steps\api\http.steps.ts:49
@@ -203,31 +229,39 @@ Feature: Behaviour shared by every endpoint
     ✔ And the response field "status" is "ok"   # tests\steps\api\http.steps.ts:69
 
   @api
-  Scenario Outline: Responses are JSON: /videos                           # tests\features\api\general.feature:19
-    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
-    ✔ When I request "/videos"                                            # tests\steps\api\http.steps.ts:34
-    ✔ Then the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+  Scenario Outline: Responses are JSON: /videos                          # tests\features\api\general.feature:21
+    ✔ Given the catalogue API is running                                 # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos"                                           # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                    # tests\steps\api\http.steps.ts:49
+    ✔ And the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+    ✔ And the response matches the API contract                          # tests\steps\api\http.steps.ts:53
 
   @api
-  Scenario Outline: Responses are JSON: /videos/vid_404                   # tests\features\api\general.feature:20
-    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
-    ✔ When I request "/videos/vid_404"                                    # tests\steps\api\http.steps.ts:34
-    ✔ Then the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+  Scenario Outline: Responses are JSON: /videos/vid_404                  # tests\features\api\general.feature:22
+    ✔ Given the catalogue API is running                                 # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/videos/vid_404"                                   # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 404                                    # tests\steps\api\http.steps.ts:49
+    ✔ And the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+    ✔ And the response matches the API contract                          # tests\steps\api\http.steps.ts:53
 
   @api
-  Scenario Outline: Responses are JSON: /channels?limit=0                 # tests\features\api\general.feature:21
-    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
-    ✔ When I request "/channels?limit=0"                                  # tests\steps\api\http.steps.ts:34
-    ✔ Then the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+  Scenario Outline: Responses are JSON: /channels?limit=0                # tests\features\api\general.feature:23
+    ✔ Given the catalogue API is running                                 # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/channels?limit=0"                                 # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 400                                    # tests\steps\api\http.steps.ts:49
+    ✔ And the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+    ✔ And the response matches the API contract                          # tests\steps\api\http.steps.ts:53
 
   @api
-  Scenario Outline: Responses are JSON: /stats/views?groupBy=month        # tests\features\api\general.feature:22
-    ✔ Given the catalogue API is running                                  # tests\steps\api\http.steps.ts:29
-    ✔ When I request "/stats/views?groupBy=month"                         # tests\steps\api\http.steps.ts:34
-    ✔ Then the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+  Scenario Outline: Responses are JSON: /stats/views?groupBy=month       # tests\features\api\general.feature:24
+    ✔ Given the catalogue API is running                                 # tests\steps\api\http.steps.ts:29
+    ✔ When I request "/stats/views?groupBy=month"                        # tests\steps\api\http.steps.ts:34
+    ✔ Then the response status is 200                                    # tests\steps\api\http.steps.ts:49
+    ✔ And the response header "content-type" contains "application/json" # tests\steps\api\http.steps.ts:61
+    ✔ And the response matches the API contract                          # tests\steps\api\http.steps.ts:53
 
   @api
-  Scenario Outline: POST is not allowed on /videos   # tests\features\api\general.feature:33
+  Scenario Outline: POST is not allowed on /videos   # tests\features\api\general.feature:35
     ✔ Given the catalogue API is running             # tests\steps\api\http.steps.ts:29
     ✔ When I send a POST request to "/videos"        # tests\steps\api\http.steps.ts:38
     ✔ Then the response status is 405                # tests\steps\api\http.steps.ts:49
@@ -236,7 +270,7 @@ Feature: Behaviour shared by every endpoint
     ✔ And the error code is "METHOD_NOT_ALLOWED"     # tests\steps\api\http.steps.ts:73
 
   @api
-  Scenario Outline: PUT is not allowed on /videos/vid_001 # tests\features\api\general.feature:34
+  Scenario Outline: PUT is not allowed on /videos/vid_001 # tests\features\api\general.feature:36
     ✔ Given the catalogue API is running                  # tests\steps\api\http.steps.ts:29
     ✔ When I send a PUT request to "/videos/vid_001"      # tests\steps\api\http.steps.ts:38
     ✔ Then the response status is 405                     # tests\steps\api\http.steps.ts:49
@@ -245,7 +279,7 @@ Feature: Behaviour shared by every endpoint
     ✔ And the error code is "METHOD_NOT_ALLOWED"          # tests\steps\api\http.steps.ts:73
 
   @api
-  Scenario Outline: DELETE is not allowed on /videos/vid_001 # tests\features\api\general.feature:35
+  Scenario Outline: DELETE is not allowed on /videos/vid_001 # tests\features\api\general.feature:37
     ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
     ✔ When I send a DELETE request to "/videos/vid_001"      # tests\steps\api\http.steps.ts:38
     ✔ Then the response status is 405                        # tests\steps\api\http.steps.ts:49
@@ -254,7 +288,7 @@ Feature: Behaviour shared by every endpoint
     ✔ And the error code is "METHOD_NOT_ALLOWED"             # tests\steps\api\http.steps.ts:73
 
   @api
-  Scenario Outline: PATCH is not allowed on /channels # tests\features\api\general.feature:36
+  Scenario Outline: PATCH is not allowed on /channels # tests\features\api\general.feature:38
     ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
     ✔ When I send a PATCH request to "/channels"      # tests\steps\api\http.steps.ts:38
     ✔ Then the response status is 405                 # tests\steps\api\http.steps.ts:49
@@ -263,7 +297,7 @@ Feature: Behaviour shared by every endpoint
     ✔ And the error code is "METHOD_NOT_ALLOWED"      # tests\steps\api\http.steps.ts:73
 
   @api
-  Scenario Outline: POST is not allowed on /stats/views # tests\features\api\general.feature:37
+  Scenario Outline: POST is not allowed on /stats/views # tests\features\api\general.feature:39
     ✔ Given the catalogue API is running                # tests\steps\api\http.steps.ts:29
     ✔ When I send a POST request to "/stats/views"      # tests\steps\api\http.steps.ts:38
     ✔ Then the response status is 405                   # tests\steps\api\http.steps.ts:49
@@ -272,14 +306,14 @@ Feature: Behaviour shared by every endpoint
     ✔ And the error code is "METHOD_NOT_ALLOWED"        # tests\steps\api\http.steps.ts:73
 
   @api
-  Scenario: HEAD is answered like GET, without a body # tests\features\api\general.feature:39
+  Scenario: HEAD is answered like GET, without a body # tests\features\api\general.feature:41
     ✔ Given the catalogue API is running              # tests\steps\api\http.steps.ts:29
     ✔ When I send a HEAD request to "/videos"         # tests\steps\api\http.steps.ts:38
     ✔ Then the response status is 200                 # tests\steps\api\http.steps.ts:49
     ✔ And the response body is empty                  # tests\steps\api\http.steps.ts:65
 
   @api
-  Scenario: An unknown route returns the standard error body # tests\features\api\general.feature:44
+  Scenario: An unknown route returns the standard error body # tests\features\api\general.feature:46
     ✔ Given the catalogue API is running                     # tests\steps\api\http.steps.ts:29
     ✔ When I request "/playlists"                            # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 404                        # tests\steps\api\http.steps.ts:49
@@ -287,7 +321,7 @@ Feature: Behaviour shared by every endpoint
     ✔ And the error code is "NOT_FOUND"                      # tests\steps\api\http.steps.ts:73
 
   @api
-  Scenario: A malformed percent-encoding is a client error, not a crash # tests\features\api\general.feature:50
+  Scenario: A malformed percent-encoding is a client error, not a crash # tests\features\api\general.feature:52
     ✔ Given the catalogue API is running                                # tests\steps\api\http.steps.ts:29
     ✔ When I request "/videos/%E0%A4%A"                                 # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400                                   # tests\steps\api\http.steps.ts:49
@@ -688,6 +722,7 @@ Feature: Videos endpoint rejects bad query parameters
     ✔ Given the catalogue API is running                                   # tests\steps\api\http.steps.ts:29
     ✔ When I request "/videos?limit=500"                                   # tests\steps\api\http.steps.ts:34
     ✔ Then the response status is 400                                      # tests\steps\api\http.steps.ts:49
+    ✔ And the response matches the API contract                            # tests\steps\api\http.steps.ts:53
     ✔ And the error message is "limit must be an integer between 1 and 50" # tests\steps\api\http.steps.ts:84
 
 Feature: Videos endpoint
@@ -1063,6 +1098,6 @@ Feature: Videos endpoint
     ✔ And the error code is "UNKNOWN_PARAMETER"                    # tests\steps\api\http.steps.ts:73
 
 1 hook (1 passed)
-120 scenarios (120 passed)
-1039 steps (1039 passed)
-0m 1.502s (0m 1.288s executing your code)
+122 scenarios (122 passed)
+1074 steps (1074 passed)
+0m 1.051s (0m 0.902s executing your code)

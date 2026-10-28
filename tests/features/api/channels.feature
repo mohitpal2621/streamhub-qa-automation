@@ -31,6 +31,7 @@ Feature: Channels endpoint
   Scenario Outline: Sort channels by <sort>
     When I request "/channels?sort=<sort>"
     Then the response status is 200
+    And the response matches the API contract
     And the items are sorted by "<field>" in <direction> order
     And the item ids are "<ids>"
 
@@ -52,7 +53,9 @@ Feature: Channels endpoint
 
   Scenario: Each channel's video count agrees with the videos endpoint
     When I request "/channels"
-    Then each channel's "videoCount" equals the number of videos the videos endpoint returns for it
+    Then the response status is 200
+    And the response matches the API contract
+    And each channel's "videoCount" equals the number of videos the videos endpoint returns for it
 
   Scenario Outline: Reject <case>
     When I request "/channels?<query>"
@@ -67,6 +70,8 @@ Feature: Channels endpoint
       | a three-letter country code  | country=GBR       | INVALID_PARAMETER | country        |
       | a verified flag of "1"       | verified=1        | INVALID_PARAMETER | verified       |
       | negative subscribers         | minSubscribers=-1 | INVALID_PARAMETER | minSubscribers |
+      | a one-letter search          | q=a               | INVALID_PARAMETER | q              |
       | a sort field videos have     | sort=views        | INVALID_PARAMETER | sort           |
+      | page 0                       | page=0            | INVALID_PARAMETER | page           |
       | a limit of 500               | limit=500         | INVALID_PARAMETER | limit          |
       | a filter that videos have    | category=music    | UNKNOWN_PARAMETER | category       |
