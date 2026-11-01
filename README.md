@@ -233,9 +233,7 @@ The SQL features compare the output with hand-worked expected rows, then run ten
 
 ## Working with Claude Code
 
-Claude Code wrote most of this repository, starting from the PDF of the brief. In practice that looked like this.
-
-It read the brief, picked Section B and planned the layout first: feature files, step definitions, page objects, an API client in place of page objects for the API, and the OpenAPI contract before the API code. Before writing any page object it explored emicalculator.net with throwaway Playwright scripts that printed the form's HTML, the Highcharts series data, the jQuery UI slider ranges and steps, the calendar markup and the tooltip text. The selectors in the page objects come from that output. It also checked the loan maths against the live site before writing a test around it: scenario A's total interest of ₹14,64,522 and the June 2027 schedule both matched to the paisa.
+Claude Code wrote most of this repository. It started from the PDF of the brief, picked Section B and planned the layout first: feature files, step definitions, page objects, an API client in place of page objects for the API, and the OpenAPI contract before the API code. Before writing any page object it explored emicalculator.net with throwaway Playwright scripts that printed the form's HTML, the Highcharts series data, the jQuery UI slider ranges and steps, the calendar markup and the tooltip text. The selectors in the page objects come from that output. It also checked the loan maths against the live site before writing a test around it: scenario A's total interest of ₹14,64,522 and the June 2027 schedule both matched to the paisa.
 
 What worked well:
 
@@ -243,7 +241,7 @@ What worked well:
 - Writing the bulk: the 122-scenario API matrix, the seed data with one case per edge, and the deliberately wrong SQL queries that prove each case matters.
 - The loop of running a suite, reading its output and screenshots, and fixing what they showed.
 
-What went wrong and had to be corrected:
+Where it went wrong:
 
 - The first way of counting bars returned 7 for a 6-year schedule. The legend's colour swatch carries the same `highcharts-point` class as the bars. Scoping the selector to the plot area, and finding each series through its legend entry, fixed it.
 - Hovering a bar timed out because the balance line's invisible hover band was on top of it. Playwright's error named the intercepting element, which led to the trial-hover approach.
@@ -254,4 +252,4 @@ What went wrong and had to be corrected:
 - Using Claude Code itself as the healer, a one-line test question was reported as costing $0.45, because `claude -p` loads about 55,000 tokens of tools, MCP servers, settings and skills by default. Switching those off brought the overhead down to about 1,400 tokens and the cost to $0.03.
 - emicalculator.net once took more than 30 seconds to load during exploration, so the navigation timeout is 60 seconds and UI scenarios get one retry.
 
-The common thread: it is fast at the bulk of the work, but what it believes about a page is a guess until a script prints the DOM, and an AI-proposed locator deserves the same checks whether it comes from a coding assistant or from the healer.
+Claude Code is fast at the bulk of the work, but what it believes about a page is a guess until a script prints the DOM. Any locator an AI proposes, whether from a coding assistant or from the healer, needs the same checks.

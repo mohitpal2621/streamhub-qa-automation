@@ -31,7 +31,7 @@ When the probe fails, the healer gets:
 - what the step needs from it: a role, an accessible name, a text pattern, or that it is editable,
 - a compact list of the visible elements on the page ([`page-elements.ts`](../tests/self-healing/page-elements.ts)): tag, role, accessible name, id, name attribute, label, text, the nearest heading above it, and the id of its closest ancestor that has one.
 
-The element list rather than the raw HTML: the emicalculator.net page is about 250 KB of HTML, mostly articles and ad markup, while the list is capped at 250 entries and holds what a locator can be built from. The intent matters as much as the selector. `#personal-loan-amount` hints at what it wanted, but `span:nth-child(2)` says nothing, and without "the EMI amount under the Loan EMI heading" no healer could know which number on the page was meant.
+The healer gets this list instead of the raw HTML because the emicalculator.net page is about 250 KB of HTML, mostly articles and ad markup, while the list is capped at 250 entries and holds what a locator can be built from. The intent matters as much as the selector. `#personal-loan-amount` hints at what it wanted, but `span:nth-child(2)` says nothing, and without "the EMI amount under the Loan EMI heading" no healer could know which number on the page was meant.
 
 Healing only ever runs for a locator that cannot find its element. An assertion that fails on an element that was found is left alone, because that can be a real bug, and repairing the locator would hide it.
 
