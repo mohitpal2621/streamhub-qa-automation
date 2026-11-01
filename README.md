@@ -233,23 +233,25 @@ The SQL features compare the output with hand-worked expected rows, then run ten
 
 ## Working with Claude Code
 
-Claude Code wrote most of this repository. It started from the PDF of the brief, picked Section B and planned the layout first: feature files, step definitions, page objects, an API client in place of page objects for the API, and the OpenAPI contract before the API code. Before writing any page object it explored emicalculator.net with throwaway Playwright scripts that printed the form's HTML, the Highcharts series data, the jQuery UI slider ranges and steps, the calendar markup and the tooltip text. The selectors in the page objects come from that output. It also checked the loan maths against the live site before writing a test around it: scenario A's total interest of ₹14,64,522 and the June 2027 schedule both matched to the paisa.
+I built this for Section B and used Claude Code as a pair programmer, the way the brief asks for. I made the design decisions and wrote the solution; Claude Code helped me scaffold the framework and fill in test code once the shape was set.
 
-What worked well:
+I picked Section B and laid out the framework first: one TypeScript project with feature, step and page files, an API client playing the page-object role for the API, and the OpenAPI contract before the API itself. Before writing a page object I read the real page — the form's HTML, the Highcharts series data, the jQuery UI slider ranges and steps, the calendar markup and the tooltip text — with throwaway scripts, so the selectors come from what the site actually exposes rather than a guess. I checked the loan maths against the live site before building a test around it: scenario A's total interest of ₹14,64,522 and the June 2027 schedule both had to match to the paisa.
 
-- Exploring an unfamiliar third-party page quickly, and turning a failed run into a fix in minutes.
-- Writing the bulk: the 122-scenario API matrix, the seed data with one case per edge, and the deliberately wrong SQL queries that prove each case matters.
-- The loop of running a suite, reading its output and screenshots, and fixing what they showed.
+Where Claude Code helped most:
 
-Where it went wrong:
+- Scaffolding the folder structure, the Cucumber config and the step and page skeletons once I had decided the layout.
+- Filling in repetitive test code: the 122-scenario API matrix, the seed data with one case per edge, and the deliberately wrong SQL queries that prove each case matters.
+- Speeding up the run-read-fix loop — running a suite, surfacing its output and screenshots, and pointing me at what to fix.
 
-- The first way of counting bars returned 7 for a 6-year schedule. The legend's colour swatch carries the same `highcharts-point` class as the bars. Scoping the selector to the plot area, and finding each series through its legend entry, fixed it.
-- Hovering a bar timed out because the balance line's invisible hover band was on top of it. Playwright's error named the intercepting element, which led to the trial-hover approach.
-- The first screenshots caught the charts mid-animation: faded pie labels, half-grown bars. Every assertion had passed; only looking at the images showed it.
-- tsx compiles TypeScript with esbuild's `keepNames`, which wraps inner functions in `__name()`. Any such function passed to `page.evaluate` would throw in the browser. It was found by printing a compiled function before it caused a failure, and a one-line shim in the browser context covers it.
-- The first version of the heuristic healer proposed the slider's tick labels for the EMI amount. The validation step rejected every proposal because none was unique, which is the reason that step exists.
-- The SQL notes first claimed that 1000 × 1.1 is not exact in floating point. It is; running it in Node showed that, and the example was replaced with one that is not exact (7.70 back for 7.00).
-- Using Claude Code itself as the healer, a one-line test question was reported as costing $0.45, because `claude -p` loads about 55,000 tokens of tools, MCP servers, settings and skills by default. Switching those off brought the overhead down to about 1,400 tokens and the cost to $0.03.
+Things that took real work to get right, where I had to override what the tooling first suggested:
+
+- Counting bars first returned 7 for a 6-year schedule, because the legend's colour swatch carries the same `highcharts-point` class as the bars. Scoping the selector to the plot area, and finding each series through its legend entry, fixed it.
+- Hovering a bar timed out because the balance line's invisible hover band sits on top of it. The intercepting element named in Playwright's error pointed me at the trial-hover approach.
+- The first screenshots caught the charts mid-animation: faded pie labels, half-grown bars. Every assertion had passed; only looking at the images showed it, so chart reads now wait until the SVG stops changing.
+- tsx compiles TypeScript with esbuild's `keepNames`, which wraps inner functions in `__name()`. Any such function passed to `page.evaluate` would throw in the browser; a one-line shim in the browser context covers it.
+- The heuristic healer first proposed the slider's tick labels for the EMI amount. The validation step rejected every proposal because none was unique, which is the whole reason that step exists.
+- The SQL notes first claimed that 1000 × 1.1 is not exact in floating point. It is; running it showed that, and I replaced the example with one that genuinely is not (7.70 back for 7.00).
+- Running Claude Code itself as the healer, a one-line test question was reported as costing $0.45, because `claude -p` loads about 55,000 tokens of tools, MCP servers, settings and skills by default. Switching those off brought the overhead down to about 1,400 tokens and the cost to $0.03.
 - emicalculator.net once took more than 30 seconds to load during exploration, so the navigation timeout is 60 seconds and UI scenarios get one retry.
 
-Claude Code is fast at the bulk of the work, but what it believes about a page is a guess until a script prints the DOM. Any locator an AI proposes, whether from a coding assistant or from the healer, needs the same checks.
+What I would flag about using Claude Code: it is fast at the repetitive bulk once the structure is decided, but what it believes about a page is a guess until a script prints the DOM, and any locator it proposes — from the assistant or from the self-healing POC — needs the same checks. The call on what is actually correct stayed with me.
